@@ -1,0 +1,10 @@
+.idea
+.mvn
+target
+mvnw
+mvnw.cmd
+/liao.iml
+/liao-system/*.iml
+*.iml
+/liao-admin/*.iml
+/liao-common/liao-common.iml
