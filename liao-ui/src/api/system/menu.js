@@ -3,7 +3,7 @@ import { system_service } from '@/utils/request'
 // 查询菜单列表
 export function listMenu(query) {
   return system_service({
-    url: '/sys-menu/sel_page',
+    url: '/system/sys-menu/sel_page',
     method: 'post',
     params: query
   })
@@ -12,7 +12,7 @@ export function listMenu(query) {
 // 查询菜单详细
 export function getMenu(id) {
   return system_service({
-    url: '/sys-menu/sel_id/',
+    url: '/system/sys-menu/sel_id/',
     method: 'post',
     params: {
       id
@@ -23,7 +23,7 @@ export function getMenu(id) {
 // 查询菜单下拉树结构
 export function treeselect() {
   return system_service({
-    url: '/sys-menu/menu_tree_select',
+    url: '/system/sys-menu/menu_tree_select',
     method: 'get'
   })
 }
@@ -31,7 +31,7 @@ export function treeselect() {
 // 根据角色ID查询菜单下拉树结构
 export function roleMenuTreeselect(roleId) {
   return system_service({
-    url: '/sys-menu/role_menu_tree_select/',
+    url: '/system/sys-menu/role_menu_tree_select/',
     method: 'post',
     params: {
       roleId
@@ -42,7 +42,7 @@ export function roleMenuTreeselect(roleId) {
 // 新增菜单
 export function addMenu(data) {
   return system_service({
-    url: '/sys-menu/add',
+    url: '/system/sys-menu/add',
     method: 'post',
     params: data
   })
@@ -51,7 +51,7 @@ export function addMenu(data) {
 // 修改菜单
 export function updateMenu(data) {
   return system_service({
-    url: '/sys-menu/upd_id',
+    url: '/system/sys-menu/upd_id',
     method: 'post',
     params: data
   })

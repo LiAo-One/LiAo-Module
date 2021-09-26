@@ -21,7 +21,7 @@ import java.util.List;
  * @since 2020-12-17
  */
 @RestController
-@RequestMapping("/sys-open-log")
+@RequestMapping("/system/sys-open-log")
 @Api(tags = {"操作日志记录"})
 public class SysOpenLogController {
 

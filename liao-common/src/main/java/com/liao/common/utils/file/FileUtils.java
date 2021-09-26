@@ -8,6 +8,14 @@ import java.io.*;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * <p>
+ * 文件处理工具类
+ * </p>
+ *
+ * @author LiAo
+ * @since 2021/9/23
+ */
 public class FileUtils extends org.apache.commons.io.FileUtils {
 
     /**
@@ -17,7 +25,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
      * @return true 正常 false 非法
      */
     public static boolean checkAllowDownload(String resource) {
-        // 禁止目录上跳级别
+        // 禁止目录上跳级别  判断是否包含 ..
         if (StringUtils.contains(resource, "..")) {
             return false;
         }
@@ -41,15 +49,13 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
     public static void setAttachmentResponseHeader(HttpServletResponse response, String realFileName) throws UnsupportedEncodingException {
         String percentEncodedFileName = percentEncode(realFileName);
 
-        StringBuilder contentDispositionValue = new StringBuilder();
-        contentDispositionValue.append("attachment; filename=")
-                .append(percentEncodedFileName)
-                .append(";")
-                .append("filename*=")
-                .append("utf-8''")
-                .append(percentEncodedFileName);
-
-        response.setHeader("Content-disposition", contentDispositionValue.toString());
+        String contentDispositionValue = "attachment; filename=" +
+                percentEncodedFileName +
+                ";" +
+                "filename*=" +
+                "utf-8''" +
+                percentEncodedFileName;
+        response.setHeader("Content-disposition", contentDispositionValue);
     }
 
     /**
@@ -57,24 +63,31 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
      *
      * @param filePath 文件路径
      * @param os       输出流
-     * @return
      */
     public static void writeBytes(String filePath, OutputStream os) throws IOException {
         FileInputStream fis = null;
         try {
+            // 创建文件对象
             File file = new File(filePath);
+            // 验证文件是否存在
             if (!file.exists()) {
                 throw new FileNotFoundException(filePath);
             }
+            // 输入流
             fis = new FileInputStream(file);
+            // 定义数组
             byte[] b = new byte[1024];
+            // 长度
             int length;
+            // 读取文件
             while ((length = fis.read(b)) > 0) {
+                // 写入
                 os.write(b, 0, length);
             }
         } catch (IOException e) {
             throw e;
         } finally {
+            // 关闭流
             if (os != null) {
                 try {
                     os.close();
@@ -96,13 +109,16 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
      * 删除文件
      *
      * @param filePath 文件
-     * @return
+     * @return 是否成功
      */
     public static boolean deleteFile(String filePath) {
+        // 状态
         boolean flag = false;
+
         File file = new File(filePath);
         // 路径为文件且不为空则进行删除
         if (file.isFile() && file.exists()) {
+            // 删除
             file.delete();
             flag = true;
         }

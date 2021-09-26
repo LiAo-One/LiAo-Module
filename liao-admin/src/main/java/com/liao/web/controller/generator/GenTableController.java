@@ -32,7 +32,7 @@ import java.util.Map;
  * @since 2021-07-07
  */
 @RestController
-@RequestMapping("/gen-table")
+@RequestMapping("/tool/gen-table")
 @Api(tags = {"代码生成业务"})
 public class GenTableController {
 

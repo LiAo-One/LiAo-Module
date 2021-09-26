@@ -73,14 +73,24 @@ public class ExcelUtil<T> {
         this.clazz = clazz;
     }
 
+    /**
+     * 配置数据
+     *
+     * @param list      列表
+     * @param sheetName 工作簿名称
+     * @param type      字段类型
+     */
     public void init(List<T> list, String sheetName, Excel.Type type) {
         if (list == null) {
             list = new ArrayList<T>();
         }
         this.list = list;
+        // 设置工作表名称
         this.sheetName = sheetName;
         this.type = type;
+        // 获取字段及其注释列表
         createExcelField();
+        // 创建工作簿对象
         createWorkbook();
     }
 
@@ -227,6 +237,7 @@ public class ExcelUtil<T> {
     public R importTemplateExcel(String sheetName) {
         // 初始化配置数据
         this.init(null, sheetName, Excel.Type.IMPORT);
+        // 设置工作簿
         return exportExcel();
     }
 
@@ -238,33 +249,40 @@ public class ExcelUtil<T> {
     public R exportExcel() {
         OutputStream out = null;
         try {
-            // 取出一共有多少个sheet.
+            // 取模 获取工作簿数量
             double sheetNo = Math.ceil(list.size() / sheetSize);
             for (int index = 0; index <= sheetNo; index++) {
                 // 创建工作表
                 createSheet(sheetNo, index);
-
-                // 产生一行
+                // 工作表中创建第一行
                 Row row = sheet.createRow(0);
                 int column = 0;
                 // 写入各个字段的列头名称
                 for (Object[] os : fields) {
+                    // 获取注解信息
                     Excel excel = (Excel) os[1];
+                    // 创建单元格 并设置样式
                     this.createCell(excel, row, column++);
                 }
+
+                // 只导出
                 if (Excel.Type.EXPORT.equals(type)) {
                     fillExcelData(index, row);
                     addStatisticsRow();
                 }
             }
+            // 设置文件名称
             String filename = encodingFilename(sheetName);
+            // 创建文件对象
             out = new FileOutputStream(getAbsoluteFile(filename));
+            // 写入 生成文件
             wb.write(out);
             return R.success(filename);
         } catch (Exception e) {
             log.error("导出Excel异常{}", e.getMessage());
             throw new CustomException("导出Excel失败，请联系网站管理员！");
         } finally {
+            // 关闭流
             if (wb != null) {
                 try {
                     wb.close();
@@ -285,8 +303,8 @@ public class ExcelUtil<T> {
     /**
      * 填充excel数据
      *
-     * @param index 序号
-     * @param row   单元格行
+     * @param index 工作表序号
+     * @param row   单元格行对象
      */
     public void fillExcelData(int index, Row row) {
         int startNo = index * sheetSize;
@@ -315,39 +333,67 @@ public class ExcelUtil<T> {
     private Map<String, CellStyle> createStyles(Workbook wb) {
         // 写入各条记录,每条记录对应excel表中的一行
         Map<String, CellStyle> styles = new HashMap<String, CellStyle>();
+        // 创建表格样式对象
         CellStyle style = wb.createCellStyle();
+        // 单元格水平对齐类型
         style.setAlignment(HorizontalAlignment.CENTER);
+        // 单元格垂直居中
         style.setVerticalAlignment(VerticalAlignment.CENTER);
+        // 右边框类型
         style.setBorderRight(BorderStyle.THIN);
+        // 右边框颜色
         style.setRightBorderColor(IndexedColors.GREY_50_PERCENT.getIndex());
+        // 左边框类型
         style.setBorderLeft(BorderStyle.THIN);
+        // 左边框颜色
         style.setLeftBorderColor(IndexedColors.GREY_50_PERCENT.getIndex());
+        // 顶部边框类型
         style.setBorderTop(BorderStyle.THIN);
+        // 顶部边框颜色
         style.setTopBorderColor(IndexedColors.GREY_50_PERCENT.getIndex());
+        // 底部边框类型
         style.setBorderBottom(BorderStyle.THIN);
+        // 底部边框颜色
         style.setBottomBorderColor(IndexedColors.GREY_50_PERCENT.getIndex());
+        // 获取字体
         Font dataFont = wb.createFont();
+        // 字体名称
         dataFont.setFontName("Arial");
+        // 字体高度
         dataFont.setFontHeightInPoints((short) 10);
+        // 设置字体
         style.setFont(dataFont);
+        // 样式
         styles.put("data", style);
 
+        // 创建第二个样式
         style = wb.createCellStyle();
+        // 克隆之前的
         style.cloneStyleFrom(styles.get("data"));
+        // 单元格水平居中类型
         style.setAlignment(HorizontalAlignment.CENTER);
+        // 单元格垂直居中
         style.setVerticalAlignment(VerticalAlignment.CENTER);
+        // 单元格背景色填充
         style.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.getIndex());
+        // 前景色填充
         style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        // 字体
         Font headerFont = wb.createFont();
         headerFont.setFontName("Arial");
         headerFont.setFontHeightInPoints((short) 10);
         headerFont.setBold(true);
+        // 字体颜色
         headerFont.setColor(IndexedColors.WHITE.getIndex());
+        // 设置字体样式
         style.setFont(headerFont);
         styles.put("header", style);
 
+        // 第三个样式
         style = wb.createCellStyle();
+        // 单元格水平居中类型
         style.setAlignment(HorizontalAlignment.CENTER);
+        // 单元格垂直居中
         style.setVerticalAlignment(VerticalAlignment.CENTER);
         Font totalFont = wb.createFont();
         totalFont.setFontName("Arial");
@@ -360,13 +406,20 @@ public class ExcelUtil<T> {
 
     /**
      * 创建单元格
+     *
+     * @param attr   字段注解信息
+     * @param row    行信息
+     * @param column 列信息
+     * @return 单元格信息
      */
     public Cell createCell(Excel attr, Row row, int column) {
         // 创建列
         Cell cell = row.createCell(column);
         // 写入列信息
         cell.setCellValue(attr.name());
+        // 设置单元格
         setDataValidation(attr, row, column);
+        // 设置头部样式
         cell.setCellStyle(styles.get("header"));
         return cell;
     }
@@ -390,13 +443,20 @@ public class ExcelUtil<T> {
 
     /**
      * 创建表格样式
+     *
+     * @param attr   注解信息
+     * @param row    行信息
+     * @param column 第一列
      */
     public void setDataValidation(Excel attr, Row row, int column) {
+        // 判断文本索引
         if (attr.name().indexOf("注：") >= 0) {
+            // 设置单元格宽度
             sheet.setColumnWidth(column, 6000);
         } else {
             // 设置列宽
             sheet.setColumnWidth(column, (int) ((attr.width() + 0.72) * 256));
+            // 谁知高度
             row.setHeight((short) (attr.height() * 20));
         }
         // 如果设置了提示信息则鼠标放上去提示.
@@ -692,30 +752,46 @@ public class ExcelUtil<T> {
      * 得到所有定义字段
      */
     private void createExcelField() {
+        // 注解列表
         this.fields = new ArrayList<Object[]>();
+
+        // 存储类反射模板
         List<Field> tempFields = new ArrayList<>();
+        // 获取类字段信息
         tempFields.addAll(Arrays.asList(clazz.getSuperclass().getDeclaredFields()));
         tempFields.addAll(Arrays.asList(clazz.getDeclaredFields()));
+
+        // 遍历类的信息
         for (Field field : tempFields) {
-            // 单注解
+            // 判断字段是否包含指定注解
             if (field.isAnnotationPresent(Excel.class)) {
+                // 存储字段信息 和 注释的列表
                 putToField(field, field.getAnnotation(Excel.class));
             }
 
             // 多注解
             if (field.isAnnotationPresent(Excels.class)) {
+                // 符合注解
                 Excels attrs = field.getAnnotation(Excels.class);
+                // 注解值 数组
                 Excel[] excels = attrs.value();
+                // 遍历注解对象
                 for (Excel excel : excels) {
+                    // 存储字段列表
                     putToField(field, excel);
                 }
             }
         }
+
+        // 排序转List
         this.fields = this.fields.stream().sorted(Comparator.comparing(objects -> ((Excel) objects[1]).sort())).collect(Collectors.toList());
     }
 
     /**
-     * 放到字段集合中
+     * 存储字段列表
+     *
+     * @param field 字段信息
+     * @param attr  字段的注释
      */
     private void putToField(Field field, Excel attr) {
         if (attr != null && (attr.type() == Excel.Type.ALL || attr.type() == type)) {
@@ -737,7 +813,9 @@ public class ExcelUtil<T> {
      * @param index   序号
      */
     public void createSheet(double sheetNo, int index) {
+        // 创建工作表
         this.sheet = wb.createSheet();
+        // 表格样式
         this.styles = createStyles(wb);
         // 设置工作表的名称.
         if (sheetNo == 0) {

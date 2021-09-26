@@ -3,7 +3,7 @@ import {system_service} from '@/utils/request'
 // 查询登录日志列表
 export function list(query) {
   return system_service({
-    url: '/sys-logininfor/sel_page',
+    url: '/system/sys-logininfor/sel_page',
     method: 'post',
     params: query
   })
@@ -12,7 +12,7 @@ export function list(query) {
 // 删除登录日志
 export function delLogininfor(ids) {
   return system_service({
-    url: '/sys-logininfor/del_ids',
+    url: '/system/sys-logininfor/del_ids',
     method: 'post',
     params: {
       ids
@@ -23,7 +23,7 @@ export function delLogininfor(ids) {
 // 清空登录日志
 export function cleanLogininfor() {
   return system_service({
-    url: '/sys-logininfor/clean',
+    url: '/system/sys-logininfor/clean',
     method: 'delete'
   })
 }

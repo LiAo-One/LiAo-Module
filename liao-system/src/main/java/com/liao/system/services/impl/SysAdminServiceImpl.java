@@ -8,6 +8,7 @@ import com.liao.common.constant.Constants;
 import com.liao.common.core.R;
 import com.liao.common.core.page.PageUtils;
 import com.liao.common.exception.BusinessException;
+import com.liao.common.exception.ServiceException;
 import com.liao.common.exception.check.MissingParametersException;
 import com.liao.common.exception.user.LoginException;
 import com.liao.common.exception.user.PermissionException;
@@ -15,6 +16,7 @@ import com.liao.common.sytstem.entity.SysMenu;
 import com.liao.common.utils.RedisUtil;
 import com.liao.common.utils.StringUtils;
 import com.liao.common.utils.TokenUtil;
+import com.liao.common.utils.poi.ExcelUtil;
 import com.liao.framework.manager.AsyncManager;
 import com.liao.framework.manager.factory.AsyncFactory;
 import com.liao.system.dao.SysAdminMapper;
@@ -31,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -167,37 +170,23 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
         // 分页信息
         IPage<SysAdmin> page = PageUtils.startPage();
 
-        // 构造条件
-        QueryWrapper<SysAdmin> queryWrapper = new QueryWrapper<>();
-
-        // 管理员主键SysOpenLogServiceImpl.java
-        queryWrapper.eq(StringUtils.isNotNull(recode.getAdminId()), "admin_id", recode.getAdminId());
-        // 账户SysOpenLogServiceImpl.java
-        queryWrapper.eq(StringUtils.isNotNull(recode.getAdminAccount()), "admin_account", recode.getAdminAccount());
-        // 密码SysOpenLogServiceImpl.java
-        queryWrapper.eq(StringUtils.isNotNull(recode.getAdminPassword()), "admin_password", recode.getAdminPassword());
-        // 姓名SysOpenLogServiceImpl.java
-        queryWrapper.eq(StringUtils.isNotNull(recode.getAdminName()), "admin_name", recode.getAdminName());
-        // 性别SysOpenLogServiceImpl.java
-        queryWrapper.eq(StringUtils.isNotNull(recode.getAdminSex()), "admin_sex", recode.getAdminSex());
-        // 头像连接SysOpenLogServiceImpl.java
-        queryWrapper.eq(StringUtils.isNotNull(recode.getAdminAvatar()), "admin_avatar", recode.getAdminAvatar());
-        // 邮箱SysOpenLogServiceImpl.java
-        queryWrapper.eq(StringUtils.isNotNull(recode.getAdminEmail()), "admin_email", recode.getAdminEmail());
-        // 昵称SysOpenLogServiceImpl.java
-        queryWrapper.eq(StringUtils.isNotNull(recode.getAdminNickname()), "admin_nickname", recode.getAdminNickname());
-        // 备注SysOpenLogServiceImpl.java
-        queryWrapper.eq(StringUtils.isNotNull(recode.getAdminRemarks()), "admin_remarks", recode.getAdminRemarks());
-        // 创建时间SysOpenLogServiceImpl.java
-        queryWrapper.eq(StringUtils.isNotNull(recode.getCreateTime()), "create_time", recode.getCreateTime());
-        // 修改时间SysOpenLogServiceImpl.java
-        queryWrapper.eq(StringUtils.isNotNull(recode.getUpdateTime()), "update_time", recode.getUpdateTime());
-
         // 排序信息
-        QueryWrapper<SysAdmin> wrapper = PageUtils.startOrderBy(queryWrapper);
+        QueryWrapper<SysAdmin> wrapper = PageUtils.startOrderBy(getSysAdminWrapper(recode));
 
         // 返回结果
         return R.r(sysAdminMapper.selectPage(page, wrapper));
+    }
+
+    /**
+     * 查询用户数据
+     *
+     * @param sysAdmin 条件
+     * @return 结果
+     */
+    @Override
+    public List<SysAdmin> selectUserList(SysAdmin sysAdmin) {
+
+        return sysAdminMapper.selectList(getSysAdminWrapper(sysAdmin));
     }
 
     /**
@@ -237,6 +226,18 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
     @Override
     public R findByIds(List<Long> ids) {
         return R.r(sysAdminMapper.selectBatchIds(ids));
+    }
+
+    /**
+     * 根据名称查询有没有这个用户
+     *
+     * @param name 名称
+     * @return 结果
+     */
+    @Override
+    public List<SysAdmin> selectUserByUserName(String name) {
+        return sysAdminMapper.selectList(new QueryWrapper<SysAdmin>()
+                .select("admin_id", "admin_account").eq("admin_account", name));
     }
 
     /**
@@ -315,5 +316,110 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
     @Override
     public R deletes(List<Long> ids) {
         return R.r(sysAdminMapper.deleteBatchIds(ids));
+    }
+
+    /**
+     * 导入数据
+     *
+     * @param file 文件
+     * @return 结果
+     */
+    @Override
+    public String importData(MultipartFile file, boolean isUpdate) {
+        ExcelUtil<SysAdmin> util = new ExcelUtil<>(SysAdmin.class);
+        List<SysAdmin> userList = null;
+
+        try {
+            userList = util.importExcel(file.getInputStream());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (StringUtils.isNull(userList) || userList.size() == 0) {
+            throw new ServiceException("导入用户数据不能为空！");
+        }
+
+        // 成功数量
+        int successNum = 0;
+        // 失败数量
+        int failureNum = 0;
+
+        // 成功消息
+        StringBuilder successMsg = new StringBuilder();
+        // 失败消息
+        StringBuilder failureMsg = new StringBuilder();
+
+        for (SysAdmin sysAdmin : userList) {
+
+            try {
+                List<SysAdmin> sysAdmins = selectUserByUserName(sysAdmin.getAdminAccount());
+
+                // 数据不存在就执行更新
+                if (StringUtils.isEmpty(sysAdmins)) {
+                    sysAdminMapper.insert(sysAdmin);
+                    successNum++;
+                    successMsg.append("<br/>").append(successNum).append("、账号 ")
+                            .append(sysAdmin.getAdminAccount()).append(" 导入成功");
+                }
+                // 数据存在执行更新
+                else if (isUpdate) {
+                    // 获取主键
+                    sysAdmin.setAdminId(sysAdmins.get(0).getAdminId());
+                    // 根据主键更新
+                    sysAdminMapper.updateById(sysAdmin);
+                    successNum++;
+                    successMsg.append("<br/>").append(successNum).append("、账号 ")
+                            .append(sysAdmin.getAdminAccount()).append(" 导入成功");
+                } else {
+                    failureNum++;
+                    failureMsg.append("<br/>").append(failureNum).append("、账号 ")
+                            .append(sysAdmin.getAdminAccount()).append(" 已存在");
+                }
+            } catch (Exception e) {
+                failureNum++;
+                String msg = "<br/>" + failureNum + "、账号 " + sysAdmin.getAdminAccount() + " 导入失败：";
+                failureMsg.append(msg).append(e.getMessage());
+            }
+        }
+
+        if (failureNum > 0) {
+            failureMsg.insert(0, "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：");
+            throw new ServiceException(failureMsg.toString());
+        } else {
+            successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
+        }
+
+        return successMsg.toString();
+    }
+
+    public QueryWrapper<SysAdmin> getSysAdminWrapper(SysAdmin recode) {
+
+        // 构造条件
+        QueryWrapper<SysAdmin> queryWrapper = new QueryWrapper<>();
+
+        // 管理员主键SysOpenLogServiceImpl.java
+        queryWrapper.eq(StringUtils.isNotNull(recode.getAdminId()), "admin_id", recode.getAdminId());
+        // 账户SysOpenLogServiceImpl.java
+        queryWrapper.eq(StringUtils.isNotNull(recode.getAdminAccount()), "admin_account", recode.getAdminAccount());
+        // 密码SysOpenLogServiceImpl.java
+        queryWrapper.eq(StringUtils.isNotNull(recode.getAdminPassword()), "admin_password", recode.getAdminPassword());
+        // 姓名SysOpenLogServiceImpl.java
+        queryWrapper.eq(StringUtils.isNotNull(recode.getAdminName()), "admin_name", recode.getAdminName());
+        // 性别SysOpenLogServiceImpl.java
+        queryWrapper.eq(StringUtils.isNotNull(recode.getAdminSex()), "admin_sex", recode.getAdminSex());
+        // 头像连接SysOpenLogServiceImpl.java
+        queryWrapper.eq(StringUtils.isNotNull(recode.getAdminAvatar()), "admin_avatar", recode.getAdminAvatar());
+        // 邮箱SysOpenLogServiceImpl.java
+        queryWrapper.eq(StringUtils.isNotNull(recode.getAdminEmail()), "admin_email", recode.getAdminEmail());
+        // 昵称SysOpenLogServiceImpl.java
+        queryWrapper.eq(StringUtils.isNotNull(recode.getAdminNickname()), "admin_nickname", recode.getAdminNickname());
+        // 备注SysOpenLogServiceImpl.java
+        queryWrapper.eq(StringUtils.isNotNull(recode.getAdminRemarks()), "admin_remarks", recode.getAdminRemarks());
+        // 创建时间SysOpenLogServiceImpl.java
+        queryWrapper.eq(StringUtils.isNotNull(recode.getCreateTime()), "create_time", recode.getCreateTime());
+        // 修改时间SysOpenLogServiceImpl.java
+        queryWrapper.eq(StringUtils.isNotNull(recode.getUpdateTime()), "update_time", recode.getUpdateTime());
+
+        return queryWrapper;
     }
 }

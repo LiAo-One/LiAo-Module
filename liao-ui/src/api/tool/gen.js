@@ -3,7 +3,7 @@ import {system_service} from '@/utils/request'
 // 查询生成表数据
 export function listTable(query) {
   return system_service({
-    url: '/gen-table/sel_page',
+    url: '/tool/gen-table/sel_page',
     method: 'post',
     params: query
   })
@@ -12,7 +12,7 @@ export function listTable(query) {
 // 查询db数据库列表
 export function listDbTable(query) {
   return system_service({
-    url: '/gen-table/db/list',
+    url: '/tool/gen-table/db/list',
     method: 'get',
     params: query
   })
@@ -21,7 +21,7 @@ export function listDbTable(query) {
 // 查询表详细信息
 export function getGenTable(tableId) {
   return system_service({
-    url: '/gen-table/' + tableId,
+    url: '/tool/gen-table/' + tableId,
     method: 'get'
   })
 }
@@ -29,7 +29,7 @@ export function getGenTable(tableId) {
 // 修改代码生成信息
 export function updateGenTable(data) {
   return system_service({
-    url: '/gen-table',
+    url: '/tool/gen-table',
     method: 'put',
     data: data
   })
@@ -38,7 +38,7 @@ export function updateGenTable(data) {
 // 导入表
 export function importTable(data) {
   return system_service({
-    url: '/gen-table/importTable',
+    url: '/tool/gen-table/importTable',
     method: 'post',
     params: data
   })
@@ -55,7 +55,7 @@ export function previewTable(tableId) {
 // 删除表数据
 export function delTable(ids) {
   return system_service({
-    url: '/gen-table/del_ids',
+    url: '/tool/gen-table/del_ids',
     method: 'post',
     params: {
       ids

@@ -3,7 +3,7 @@ import { system_service } from '@/utils/request'
 // 查询角色列表
 export function listRole(query) {
   return system_service({
-    url: '/sys-role/sel_page',
+    url: '/system/sys-role/sel_page',
     method: 'post',
     params: query
   })
@@ -12,7 +12,7 @@ export function listRole(query) {
 // 查询角色枚举
 export function roleMenu() {
   return system_service({
-    url: 'sys-role/sel_id',
+    url: '/system/sys-role/sel_id',
     method: 'post'
   })
 }
@@ -20,7 +20,7 @@ export function roleMenu() {
 // 查询角色详细
 export function getRole(id) {
   return system_service({
-    url: '/sys-role/sel_id',
+    url: '/system/sys-role/sel_id',
     method: 'post',
     params: {
       id
@@ -36,7 +36,7 @@ export function addRole(data) {
   }
 
   return system_service({
-    url: '/sys-role/add',
+    url: '/system/sys-role/add',
     method: 'post',
     params: data
   })
@@ -49,7 +49,7 @@ export function updateRole(data) {
     data.menuIds = data.menuIds.toString()
   }
   return system_service({
-    url: '/sys-role/upd_id',
+    url: '/system/sys-role/upd_id',
     method: 'post',
     params: data
   })
@@ -71,7 +71,7 @@ export function changeRoleStatus(roleId, roleStatus) {
     roleStatus
   }
   return system_service({
-    url: '/sys-role/upd_id',
+    url: '/system/sys-role/upd_id',
     method: 'post',
     params: data
   })
@@ -80,7 +80,7 @@ export function changeRoleStatus(roleId, roleStatus) {
 // 删除角色
 export function delRole(ids) {
   return system_service({
-    url: '/sys-role/del_ids/',
+    url: '/system/sys-role/del_ids/',
     method: 'post',
     params: {
       ids
@@ -91,7 +91,7 @@ export function delRole(ids) {
 // 导出角色
 export function exportRole(query) {
   return system_service({
-    url: '/system/role/export',
+    url: '/system/system/role/export',
     method: 'get',
     params: query
   })

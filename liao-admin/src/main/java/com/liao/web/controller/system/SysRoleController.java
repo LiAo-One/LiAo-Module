@@ -24,7 +24,7 @@ import java.util.List;
  * @since 2020-12-17
  */
 @RestController
-@RequestMapping("/sys-role")
+@RequestMapping("/system/sys-role")
 @Api(tags = {"角色表"})
 public class SysRoleController {
 

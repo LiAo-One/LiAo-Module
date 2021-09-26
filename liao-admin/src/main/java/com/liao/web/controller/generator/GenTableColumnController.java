@@ -24,7 +24,7 @@ import java.util.List;
  * @since 2021-07-07
  */
 @RestController
-@RequestMapping("/gen-table-column")
+@RequestMapping("/tool/gen-table-column")
 @Api(tags = {"代码生成业务表字段"})
 public class GenTableColumnController {
 

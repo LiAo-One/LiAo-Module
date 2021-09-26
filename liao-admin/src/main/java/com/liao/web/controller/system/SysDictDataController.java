@@ -22,7 +22,7 @@ import java.util.List;
  * @since 2021-06-01
  */
 @RestController
-@RequestMapping("/sys-dict-data")
+@RequestMapping("/system/sys-dict-data")
 @Api(tags = {"字典数据表"})
 public class SysDictDataController {
 

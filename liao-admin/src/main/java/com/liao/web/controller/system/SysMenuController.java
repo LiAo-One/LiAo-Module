@@ -21,7 +21,7 @@ import java.util.List;
  * @since 2020-12-17
  */
 @RestController
-@RequestMapping("/sys-menu")
+@RequestMapping("/system/sys-menu")
 @Api(tags = {"菜单表"})
 public class SysMenuController {
 

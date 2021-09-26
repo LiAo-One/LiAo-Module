@@ -4,16 +4,15 @@ import com.liao.common.annotation.Log;
 import com.liao.common.annotation.SignatureValidation;
 import com.liao.common.core.R;
 import com.liao.common.enums.BusinessType;
+import com.liao.common.utils.poi.ExcelUtil;
 import com.liao.system.entity.SysAdmin;
 import com.liao.system.services.SysAdminService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -27,7 +26,7 @@ import java.util.List;
  */
 @Validated
 @RestController
-@RequestMapping("/sys-admin")
+@RequestMapping("/system/sys-admin")
 @Api(tags = "管理员")
 public class SysAdminController {
 
@@ -146,6 +145,45 @@ public class SysAdminController {
     @Log(title = "管理员", businessType = BusinessType.DELETE)
     public R deletes(@RequestParam("ids") List<Long> ids) {
         return sysAdminService.deletes(ids);
+    }
+
+    /**
+     * 下载模板
+     *
+     * @return 文件参数
+     */
+    @GetMapping("/importTemplate")
+    public R importTemplate() {
+        // 创建对象
+        ExcelUtil<SysAdmin> util = new ExcelUtil<>(SysAdmin.class);
+        // 返回文件生成结果
+        return util.importTemplateExcel("用户数据");
+    }
+
+    /**
+     * 导入数据
+     *
+     * @param file 文件
+     * @return 结果
+     */
+    @PostMapping("/importData")
+    @Log(title = "用户管理", businessType = BusinessType.IMPORT)
+    public R importData(MultipartFile file, boolean isUpdate) {
+        return R.success(sysAdminService.importData(file, isUpdate));
+    }
+
+    /**
+     * 导出数据
+     * @param user 条件
+     * @return 结果
+     */
+    @Log(title = "用户管理", businessType = BusinessType.EXPORT)
+    @GetMapping("/export")
+    public R export(SysAdmin user)
+    {
+        List<SysAdmin> list = sysAdminService.selectUserList(user);
+        ExcelUtil<SysAdmin> util = new ExcelUtil<>(SysAdmin.class);
+        return util.exportExcel(list, "用户数据");
     }
 }
 

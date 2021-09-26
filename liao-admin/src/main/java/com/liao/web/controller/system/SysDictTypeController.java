@@ -21,7 +21,7 @@ import java.util.List;
  * @since 2021-06-01
  */
 @RestController
-@RequestMapping("/sys-dict-type")
+@RequestMapping("/system/sys-dict-type")
 @Api(tags = {"字典类型表"})
 public class SysDictTypeController {
 
@@ -125,6 +125,11 @@ public class SysDictTypeController {
         return sysDictTypeService.selectDictDataByType(dictType);
     }
 
+    /**
+     * 获取字典选择框列表
+     *
+     * @return 结果
+     */
     @GetMapping("optionselect")
     @ApiOperation("获取字典选择框列表")
     public R optionselect() {

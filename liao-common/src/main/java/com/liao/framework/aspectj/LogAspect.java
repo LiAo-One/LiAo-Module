@@ -40,9 +40,7 @@ public class LogAspect {
 
     // 织入点
     @Pointcut("@annotation(com.liao.common.annotation.Log)")
-    public void logPointCut() {
-
-    }
+    public void logPointCut() {}
 
     /**
      * 在请求前织入 获取ip

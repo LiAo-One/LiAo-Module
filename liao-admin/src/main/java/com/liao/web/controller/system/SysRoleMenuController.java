@@ -24,7 +24,7 @@ import java.util.List;
  * @since 2020-12-17
  */
 @RestController
-@RequestMapping("/sys-role-menu")
+@RequestMapping("/system/sys-role-menu")
 @Api(tags = {"角色菜单关联表"})
 public class SysRoleMenuController {
 

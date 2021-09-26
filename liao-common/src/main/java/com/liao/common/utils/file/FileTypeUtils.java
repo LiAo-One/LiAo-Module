@@ -10,11 +10,9 @@ public class FileTypeUtils {
      * @param fileName 文件名
      * @return 后缀（不含".")
      */
-    public static String getFileType(String fileName)
-    {
+    public static String getFileType(String fileName) {
         int separatorIndex = fileName.lastIndexOf(".");
-        if (separatorIndex < 0)
-        {
+        if (separatorIndex < 0) {
             return "";
         }
         return fileName.substring(separatorIndex + 1).toLowerCase();

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2020/12/18
  */
 @RestController
-@RequestMapping("token")
+@RequestMapping("system/token")
 @Api(tags = "Token")
 public class TokenCheckController {
 

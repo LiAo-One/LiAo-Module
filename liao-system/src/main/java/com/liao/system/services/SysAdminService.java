@@ -3,6 +3,7 @@ package com.liao.system.services;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.liao.common.core.R;
 import com.liao.system.entity.SysAdmin;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -41,6 +42,15 @@ public interface SysAdminService extends IService<SysAdmin> {
      */
     R selPage(SysAdmin recode);
 
+
+    /**
+     * 查询用户数据
+     *
+     * @param sysAdmin 条件
+     * @return 结果
+     */
+    List<SysAdmin> selectUserList(SysAdmin sysAdmin);
+
     /**
      * 根据id查询数据
      *
@@ -56,6 +66,14 @@ public interface SysAdminService extends IService<SysAdmin> {
      * @return 结果
      */
     R findByIds(List<Long> ids);
+
+    /**
+     * 根据名称查询有没有这个用户
+     *
+     * @param name 名称
+     * @return 结果
+     */
+    List<SysAdmin> selectUserByUserName(String name);
 
     /**
      * 添加数据
@@ -89,4 +107,12 @@ public interface SysAdminService extends IService<SysAdmin> {
      * @return 结果
      */
     R deletes(List<Long> ids);
+
+    /**
+     * 导入数据
+     *
+     * @param file 文件
+     * @return 结果
+     */
+    String importData(MultipartFile file, boolean isUpdate);
 }

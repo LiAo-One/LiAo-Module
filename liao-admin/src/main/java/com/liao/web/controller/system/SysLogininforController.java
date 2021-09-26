@@ -21,7 +21,7 @@ import java.util.List;
  * @since 2020-12-30
  */
 @RestController
-@RequestMapping("/sys-logininfor")
+@RequestMapping("/system/sys-logininfor")
 @Api(tags = {"系统访问记录"})
 public class SysLogininforController {
 
