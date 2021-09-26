@@ -21,6 +21,7 @@ system_service.interceptors.request.use(config => {
   const isToken = (config.headers || {}).isToken === false
   if (getToken() && !isToken) {
     config.headers['Authorization'] = 'Bearer ' + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
+
   }
 
   if (config.params) {
@@ -35,7 +36,7 @@ system_service.interceptors.request.use(config => {
     }
 
     // 封装校验
-    setTokenCheck(config.params);
+    setTokenCheck(config);
 
   }
 
@@ -96,17 +97,15 @@ system_service.interceptors.response.use(res => {
 )
 
 
-function setTokenCheck(data){
-  if (data.timeInfo) {
-    data.timeInfo = null
-  }
+function setTokenCheck(data) {
 
-  if (data.token_str) {
-    data.token_str = null
-  }
+  // 删除为空的
+  Object.keys(data.params).forEach(item => {
+    if (!data.params[item]) delete data.params[item]
+  })
 
   // 排序
-  let asciiSort = sort_ASCII(data);
+  let asciiSort = sort_ASCII(data.params);
   // 获取当前时间
   let timeInfo = format().toString();
 
@@ -116,9 +115,14 @@ function setTokenCheck(data){
   asciiSort = JSON.stringify(asciiSort).toString().replaceAll(":", "=")
     .replaceAll('"', '').replaceAll(',', ', ');
 
-  data.token_str = md5(timeInfo + asciiSort + secret);
+  data.headers['X-Sign'] = md5(timeInfo + asciiSort + secret); // X-Sign
 
-  data.timeInfo = timeInfo;
+  /*console.info("timeInfo:" + timeInfo);
+  console.info("asciiSort:" + asciiSort);
+  console.info("secret:" + secret);*/
+
+  data.headers['Time-Info'] = timeInfo; // Time-Info
+
 }
 
 // 格式化参数

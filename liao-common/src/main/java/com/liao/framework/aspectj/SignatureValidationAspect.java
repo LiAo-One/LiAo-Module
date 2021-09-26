@@ -2,6 +2,7 @@ package com.liao.framework.aspectj;
 
 import cn.hutool.crypto.SecureUtil;
 import com.liao.common.constant.Constants;
+import com.liao.common.constant.SecurityConstants;
 import com.liao.common.core.text.Convert;
 import com.liao.common.exception.check.IllegalRequestException;
 import com.liao.common.utils.DateUtils;
@@ -42,10 +43,11 @@ public class SignatureValidationAspect {
      */
     @Before("verifyUserKey()")
     public void doBasicProfiling() {
+
         // 需要校验的Token
-        String token = ServletUtils.getParameter(Constants.SIGNATURE_VALIDATION);
+        String token = ServletUtils.getRequest().getHeader(SecurityConstants.X_SIGN);
         // 时间戳
-        String timeInfo = ServletUtils.getParameter(Constants.TIME_INFO);
+        String timeInfo = ServletUtils.getRequest().getHeader(SecurityConstants.Time_Info);
 
         // 格式化后的参数
         String asciiSort = setRequestValue();
