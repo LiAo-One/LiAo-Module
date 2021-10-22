@@ -3,7 +3,6 @@ package com.liao.framework.aspectj;
 import cn.hutool.crypto.SecureUtil;
 import com.liao.common.constant.Constants;
 import com.liao.common.constant.SecurityConstants;
-import com.liao.common.core.text.Convert;
 import com.liao.common.exception.check.IllegalRequestException;
 import com.liao.common.utils.DateUtils;
 import com.liao.common.utils.ServletUtils;
@@ -50,7 +49,7 @@ public class SignatureValidationAspect {
         String timeInfo = ServletUtils.getRequest().getHeader(SecurityConstants.Time_Info);
 
         // 格式化后的参数
-        String asciiSort = setRequestValue();
+        String asciiSort = timeInfo + setRequestValue();
 
         // 判断token是否为空
         if (StringUtils.isEmpty(token)) {
@@ -101,14 +100,22 @@ public class SignatureValidationAspect {
             return "";
         }
 
+        StringBuilder keyStr = new StringBuilder();
+
         Set<String> strings = map.keySet();
 
         TreeMap<String, String[]> stringTreeMap = new TreeMap<>();
 
+        // 排序集合
         for (String string : strings) {
             stringTreeMap.put(string, map.get(string));
         }
-        return Convert.toMapString(stringTreeMap);
+
+        for (String key : stringTreeMap.keySet()) {
+            keyStr.append(key);
+        }
+
+        return keyStr.toString();
     }
 }
 

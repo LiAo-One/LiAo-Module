@@ -34,7 +34,7 @@ public class TokenUtil {
      * @param json 生成的json
      * @return token
      */
-    public static String token(Map<String,String> json) {
+    public static String token(Map<String, String> json) {
 
         String token = "";
 
@@ -60,7 +60,7 @@ public class TokenUtil {
 
             // 循环生成Token
             for (String key : keys) {
-                builder.withClaim(key,json.get(key));
+                builder.withClaim(key, json.get(key));
             }
 
             token = builder.withExpiresAt(date).sign(algorithm);
@@ -105,5 +105,35 @@ public class TokenUtil {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * 获取用户信息token
+     *
+     * @param token token
+     * @return 用户key
+     */
+    public static String getUserTokenKey(String token) {
+        return "user_key_" + token;
+    }
+
+    /**
+     * 获取角色信息token
+     *
+     * @param token token
+     * @return 角色key
+     */
+    public static String getRoleTokenKey(String token) {
+        return "role_key_" + token;
+    }
+
+    /**
+     * 获取菜单信息token
+     *
+     * @param token token
+     * @return 菜单key
+     */
+    public static String getMenuTokenKey(String token) {
+        return "menu_key_" + token;
     }
 }

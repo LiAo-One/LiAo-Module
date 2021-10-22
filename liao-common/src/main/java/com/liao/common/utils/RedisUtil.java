@@ -14,10 +14,10 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings("all")
 public class RedisUtil {
 
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate redisTemplate;
 
     @Autowired
-    public RedisUtil(RedisTemplate<String, Object> redisTemplate) {
+    public RedisUtil(RedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
@@ -112,6 +112,23 @@ public class RedisUtil {
     }
 
     /**
+     * 缓存存放
+     *
+     * @param key   主键
+     * @param value 值
+     * @return 结果
+     */
+    public boolean set(String key, Object value) {
+        try {
+            redisTemplate.opsForValue().set(key, value);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
      * 普通缓存放入并设置时间
      *
      * @param key   主键
@@ -120,6 +137,24 @@ public class RedisUtil {
      * @return
      */
     public boolean set(String key, String value, long time) {
+        try {
+            redisTemplate.opsForValue().set(key, value, time, TimeUnit.SECONDS);
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 普通缓存放入并设置时间
+     *
+     * @param key   主键
+     * @param value 值
+     * @param time  时间 秒 小于零 将设置无限期
+     * @return
+     */
+    public boolean set(String key, Object value, long time) {
         try {
             redisTemplate.opsForValue().set(key, value, time, TimeUnit.SECONDS);
             return false;

@@ -42,6 +42,7 @@ public class SysAdminController {
      */
     @PostMapping("login")
     @ApiOperation("管理员登录")
+    @SignatureValidation
     public R login(String adminAccount, String adminPassword) {
         return sysAdminService.login(adminAccount, adminPassword);
     }
@@ -66,7 +67,6 @@ public class SysAdminController {
      */
     @PostMapping("sel_page")
     @ApiOperation("分页、排序、动态条件")
-    @SignatureValidation
     public R selPage(SysAdmin recode) {
         return sysAdminService.selPage(recode);
     }
@@ -174,13 +174,13 @@ public class SysAdminController {
 
     /**
      * 导出数据
+     *
      * @param user 条件
      * @return 结果
      */
     @Log(title = "用户管理", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
-    public R export(SysAdmin user)
-    {
+    public R export(SysAdmin user) {
         List<SysAdmin> list = sysAdminService.selectUserList(user);
         ExcelUtil<SysAdmin> util = new ExcelUtil<>(SysAdmin.class);
         return util.exportExcel(list, "用户数据");

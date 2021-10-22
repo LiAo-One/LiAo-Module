@@ -60,7 +60,7 @@ export function updateMenu(data) {
 // 删除菜单
 export function delMenu(id) {
   return system_service({
-    url: '/sys-menu/del_id/',
+    url: '/system/sys-menu/del_id/',
     method: 'post',
     params: {
       id
