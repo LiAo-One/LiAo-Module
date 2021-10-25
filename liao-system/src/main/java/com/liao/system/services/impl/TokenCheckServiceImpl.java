@@ -1,18 +1,11 @@
 package com.liao.system.services.impl;
 
-import com.alibaba.fastjson.JSONObject;
-import com.liao.common.constant.Constants;
 import com.liao.common.core.R;
 import com.liao.common.exception.user.LoginExpiredException;
-import com.liao.common.exception.user.PermissionException;
 import com.liao.common.sytstem.entity.SysMenu;
 import com.liao.common.utils.RedisUtil;
-import com.liao.common.utils.StringUtils;
 import com.liao.common.utils.TokenUtil;
-import com.liao.framework.manager.AsyncManager;
-import com.liao.framework.manager.factory.AsyncFactory;
 import com.liao.system.dao.SysRoleMapper;
-import com.liao.system.entity.SysAdmin;
 import com.liao.system.entity.SysRole;
 import com.liao.system.entity.vo.RouterVo;
 import com.liao.system.services.SysMenuService;

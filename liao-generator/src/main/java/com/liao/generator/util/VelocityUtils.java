@@ -5,6 +5,7 @@ import com.liao.common.utils.DateUtils;
 import com.liao.common.utils.StringUtils;
 import com.liao.generator.entity.GenTable;
 import com.liao.generator.entity.GenTableColumn;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.velocity.VelocityContext;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.List;
  * @author LiAo
  * @since 2021/7/9
  */
+@Slf4j
 public class VelocityUtils {
 
     // 项目空间路径
