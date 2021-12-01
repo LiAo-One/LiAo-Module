@@ -1,3 +1,9 @@
+#项目相关配置
+wick:
+  name: LiAo-Module
+  # 验证码类型 math 数组计算 char 字符验证
+  captchaType: char
+
 server:
   port: 8080
 spring:

@@ -57,4 +57,13 @@ public class Constants {
 
     // 上传路径
     public static final String DOWNLOAD_PATH = "D:/li_ao/uploadPath/upload";
+
+    // 参数管理 cache key
+    public static final String SYS_CONFIG_KEY = "sys_config:";
+
+    // 验证码 redis key
+    public static final String CAPTCHA_CODE_KEY = "captcha_codes:";
+
+    // 验证码有效期（分钟）
+    public static final Integer CAPTCHA_EXPIRATION = 2;
 }
