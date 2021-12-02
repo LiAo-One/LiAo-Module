@@ -1,7 +1,6 @@
 package com.liao.common.core.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.liao.common.sytstem.entity.SysMenu;
 
 import java.io.Serializable;
 import java.util.List;

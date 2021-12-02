@@ -5,7 +5,8 @@ import com.liao.common.annotation.SignatureValidation;
 import com.liao.common.core.R;
 import com.liao.common.enums.BusinessType;
 import com.liao.common.utils.poi.ExcelUtil;
-import com.liao.system.entity.SysAdmin;
+import com.liao.framework.web.service.SysLoginService;
+import com.liao.common.core.entity.SysAdmin;
 import com.liao.system.services.SysAdminService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,6 +34,9 @@ public class SysAdminController {
     @Autowired
     private SysAdminService sysAdminService;
 
+    @Autowired
+    private SysLoginService sysLoginService;
+
     /**
      * 管理员登录
      *
@@ -44,7 +48,7 @@ public class SysAdminController {
     @ApiOperation("管理员登录")
     @SignatureValidation
     public R login(String adminAccount, String adminPassword) {
-        return sysAdminService.login(adminAccount, adminPassword);
+        return sysLoginService.login(adminAccount, adminPassword);
     }
 
     /**

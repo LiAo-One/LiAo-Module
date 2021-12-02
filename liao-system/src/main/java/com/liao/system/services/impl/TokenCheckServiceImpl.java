@@ -2,7 +2,7 @@ package com.liao.system.services.impl;
 
 import com.liao.common.core.R;
 import com.liao.common.exception.user.LoginExpiredException;
-import com.liao.common.sytstem.entity.SysMenu;
+import com.liao.common.core.entity.SysMenu;
 import com.liao.common.utils.RedisUtil;
 import com.liao.common.utils.TokenUtil;
 import com.liao.system.dao.SysRoleMapper;

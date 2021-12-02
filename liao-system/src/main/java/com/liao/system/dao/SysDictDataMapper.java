@@ -1,7 +1,7 @@
 package com.liao.system.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.liao.common.sytstem.entity.SysDictData;
+import com.liao.common.core.entity.SysDictData;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

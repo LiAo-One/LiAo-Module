@@ -39,7 +39,7 @@
         <!-- 核心模块-->
         <dependency>
             <groupId>com.liao</groupId>
-            <artifactId>liao-system</artifactId>
+            <artifactId>liao-framework</artifactId>
         </dependency>
 
         <!--代码生成模块-->

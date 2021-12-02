@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.liao.common.core.R;
 import com.liao.common.core.page.PageUtils;
 import com.liao.common.exception.check.MissingParametersException;
-import com.liao.common.sytstem.entity.SysDictData;
+import com.liao.common.core.entity.SysDictData;
 import com.liao.common.utils.DictUtils;
 import com.liao.common.utils.StringUtils;
 import com.liao.system.dao.SysDictDataMapper;

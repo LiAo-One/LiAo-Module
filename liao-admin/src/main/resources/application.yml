@@ -2,7 +2,7 @@
 wick:
   name: LiAo-Module
   # 验证码类型 math 数组计算 char 字符验证
-  captchaType: char
+  captchaType: math
 
 server:
   port: 8080
@@ -62,7 +62,7 @@ spring:
             multi-statement-allow: true
   # Redis
   redis:
-    host: 120.55.96.180
+    host: 192.168.2.240
     port: 6379
     database: 0
     #连 接超时时间

@@ -8,7 +8,7 @@ import com.liao.common.core.R;
 import com.liao.common.core.entity.TreeSelect;
 import com.liao.common.core.page.PageUtils;
 import com.liao.common.exception.check.MissingParametersException;
-import com.liao.common.sytstem.entity.SysMenu;
+import com.liao.common.core.entity.SysMenu;
 import com.liao.common.utils.StringUtils;
 import com.liao.system.dao.SysMenuMapper;
 import com.liao.system.dao.SysRoleMapper;

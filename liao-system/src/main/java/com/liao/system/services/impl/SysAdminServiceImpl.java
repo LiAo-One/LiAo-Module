@@ -1,33 +1,24 @@
 package com.liao.system.services.impl;
 
-import cn.hutool.core.util.IdUtil;
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.liao.common.constant.Constants;
 import com.liao.common.core.R;
 import com.liao.common.core.page.PageUtils;
 import com.liao.common.exception.BusinessException;
 import com.liao.common.exception.ServiceException;
 import com.liao.common.exception.check.MissingParametersException;
-import com.liao.common.exception.user.LoginException;
 import com.liao.common.exception.user.LoginExpiredException;
-import com.liao.common.exception.user.PermissionException;
-import com.liao.common.sytstem.entity.SysMenu;
 import com.liao.common.utils.RedisUtil;
 import com.liao.common.utils.StringUtils;
 import com.liao.common.utils.TokenUtil;
 import com.liao.common.utils.poi.ExcelUtil;
-import com.liao.framework.manager.AsyncManager;
-import com.liao.framework.manager.factory.AsyncFactory;
 import com.liao.system.dao.SysAdminMapper;
 import com.liao.system.dao.SysAdminRoleMapper;
 import com.liao.system.dao.SysRoleMapper;
-import com.liao.system.entity.SysAdmin;
+import com.liao.common.core.entity.SysAdmin;
 import com.liao.system.entity.SysAdminRole;
 import com.liao.system.entity.SysRole;
-import com.liao.system.entity.vo.RouterVo;
 import com.liao.system.services.SysAdminRoleService;
 import com.liao.system.services.SysAdminService;
 import com.liao.system.services.SysMenuService;
@@ -78,68 +69,6 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
 
 
     /**
-     * 管理员登录
-     *
-     * @param adminAccount  账号
-     * @param adminPassword 密码
-     * @return 结果
-     */
-    @Override
-    public R login(String adminAccount, String adminPassword) {
-
-        QueryWrapper<SysAdmin> wrapper = new QueryWrapper<>();
-        wrapper.eq("admin_account", adminAccount)
-                .eq("admin_password", adminPassword);
-        List<SysAdmin> sysAdminIPage = sysAdminMapper.selectPage(PageUtils.startDefPage(), wrapper).getRecords();
-
-        // 登录校验
-        if (StringUtils.isEmpty(sysAdminIPage)) {
-            AsyncManager.me().execute(AsyncFactory.recordLogininfor(adminAccount, Constants.LOGIN_FAIL, "账号密码错误"));
-            throw new LoginException();
-        }
-
-        Long userId = sysAdminIPage.get(0).getAdminId();
-
-        // userRole
-        SysRole sysRole = sysRoleMapper.selLoginUserRole(userId);
-
-        if (StringUtils.isNull(sysRole)) {
-            AsyncManager.me().execute(AsyncFactory.recordLogininfor(adminAccount, Constants.LOGIN_FAIL, "账户角色权限信息异常"));
-            throw new PermissionException();
-        }
-        // userMenu
-        List<SysMenu> menus = sysMenuService.selectLoginMenuList(sysRole.getRoleId());
-
-        if (StringUtils.isNull(menus)) {
-            AsyncManager.me().execute(AsyncFactory.recordLogininfor(adminAccount, Constants.LOGIN_FAIL, "账户角色权限信息异常"));
-            throw new PermissionException();
-        }
-
-        // 转换为路由
-        List<RouterVo> routerVos = sysMenuService.buildMenus(menus);
-
-        // userMenu
-        String userMenu = JSON.toJSONString(routerVos);
-
-        // 生成唯一Redis-key
-        String token = IdUtil.randomUUID();
-
-        // 存储用户信息
-        redisUtil.set(TokenUtil.getUserTokenKey(token), sysAdminIPage.get(0), Constants.EXPIRE_DATE);
-        // 按钮 路由
-        redisUtil.set(TokenUtil.getMenuTokenKey(token), userMenu, Constants.EXPIRE_DATE);
-        // 角色
-        redisUtil.set(TokenUtil.getRoleTokenKey(token), sysRole, Constants.EXPIRE_DATE);
-
-        // token入库
-        redisUtil.set(token, token, Constants.EXPIRE_DATE);
-
-        AsyncManager.me().execute(AsyncFactory.recordLogininfor(adminAccount, Constants.LOGIN_SUCCESS, "登录成功"));
-
-        return R.success(token);
-    }
-
-    /**
      * 获取当前登录用户数据
      *
      * @return 用户信息
@@ -157,6 +86,7 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
         }
         return loginInfo;
     }
+
 
     /**
      * 退出登录
@@ -252,7 +182,7 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
     @Override
     public List<SysAdmin> selectUserByUserName(String name) {
         return sysAdminMapper.selectList(new QueryWrapper<SysAdmin>()
-                .select("admin_id", "admin_account").eq("admin_account", name));
+                .eq("admin_account", name));
     }
 
     /**

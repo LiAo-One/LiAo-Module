@@ -6,13 +6,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.liao.common.core.R;
 import com.liao.common.core.page.PageUtils;
 import com.liao.common.exception.check.MissingParametersException;
-import com.liao.common.sytstem.entity.SysLogininfor;
-import com.liao.common.sytstem.services.SysLogininforService;
+import com.liao.system.entity.SysLogininfor;
+import com.liao.system.services.SysLogininforService;
 import com.liao.common.utils.StringUtils;
 import com.liao.system.dao.SysLogininforMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

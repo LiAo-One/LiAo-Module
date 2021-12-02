@@ -1,20 +1,22 @@
-package com.liao.common.sytstem.services;
+package com.liao.system.services;
+
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.liao.common.core.R;
-import com.liao.common.sytstem.entity.SysLogininfor;
+import com.liao.system.entity.SysOpenLog;
+
 
 import java.util.List;
 
 /**
  * <p>
- * 系统访问记录 服务类
+ * 操作日志记录 服务类
  * </p>
  *
  * @author LiAo
- * @since 2020-12-30
+ * @since 2020-12-17
  */
-public interface SysLogininforService extends IService<SysLogininfor> {
+public interface SysOpenLogService extends IService<SysOpenLog> {
 
     /**
      * 分页查询 排序
@@ -22,7 +24,7 @@ public interface SysLogininforService extends IService<SysLogininfor> {
      * @param recode 条件
      * @return 结果
      */
-     R selPage(SysLogininfor recode);
+    R selPage(SysOpenLog recode);
 
     /**
      * 根据id查询数据
@@ -30,7 +32,7 @@ public interface SysLogininforService extends IService<SysLogininfor> {
      * @param id id
      * @return 结果
      */
-     R findById(Long id);
+    R findById(Long id);
 
     /**
      * 根据ids查询数据
@@ -38,7 +40,7 @@ public interface SysLogininforService extends IService<SysLogininfor> {
      * @param ids ids
      * @return 结果
      */
-     R findByIds(List<Long> ids);
+    R findByIds(List<Long> ids);
 
     /**
      * 添加数据
@@ -46,7 +48,7 @@ public interface SysLogininforService extends IService<SysLogininfor> {
      * @param recode 添加参数
      * @return 结果
      */
-     R add(SysLogininfor recode);
+    R add(SysOpenLog recode);
 
     /**
      * 根据id修改
@@ -54,7 +56,7 @@ public interface SysLogininforService extends IService<SysLogininfor> {
      * @param recode 修改参数
      * @return 结果
      */
-     R updById(SysLogininfor recode);
+    R updById(SysOpenLog recode);
 
     /**
      * 根据id删除
@@ -62,7 +64,7 @@ public interface SysLogininforService extends IService<SysLogininfor> {
      * @param id id
      * @return 结果
      */
-     R delete(Long id);
+    R delete(Long id);
 
     /**
      * 根据id批量删除
@@ -70,7 +72,7 @@ public interface SysLogininforService extends IService<SysLogininfor> {
      * @param ids id集合
      * @return 结果
      */
-     R deletes(List<Long> ids);
+    R deletes(List<Long> ids);
 
     /**
      * 清空操作日志

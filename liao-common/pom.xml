@@ -40,10 +40,10 @@
         </dependency>
 
         <!-- spring security 安全认证 -->
-        <!--<dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>-->
+        </dependency>
 
         <!--JWT-->
         <dependency>
@@ -94,10 +94,10 @@
         </dependency>
 
         <!-- aop 依赖 -->
-        <!--<dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>-->
+        </dependency>
 
         <!--aop切入-->
         <dependency>

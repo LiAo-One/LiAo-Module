@@ -1,4 +1,4 @@
-package com.liao.common.sytstem.services.impl;
+package com.liao.system.services.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -6,10 +6,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.liao.common.core.R;
 import com.liao.common.core.page.PageUtils;
 import com.liao.common.exception.check.MissingParametersException;
-import com.liao.common.sytstem.dao.SysOpenLogMapper;
-import com.liao.common.sytstem.entity.SysOpenLog;
-import com.liao.common.sytstem.services.SysOpenLogService;
+
 import com.liao.common.utils.StringUtils;
+import com.liao.system.dao.SysOpenLogMapper;
+import com.liao.system.entity.SysOpenLog;
+import com.liao.system.services.SysOpenLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

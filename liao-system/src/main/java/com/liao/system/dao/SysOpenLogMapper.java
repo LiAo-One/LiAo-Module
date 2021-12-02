@@ -1,7 +1,7 @@
-package com.liao.common.sytstem.dao;
+package com.liao.system.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.liao.common.sytstem.entity.SysOpenLog;
+import com.liao.system.entity.SysOpenLog;
 import org.apache.ibatis.annotations.Update;
 
 /**

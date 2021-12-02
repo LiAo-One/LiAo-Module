@@ -1,8 +1,8 @@
 package com.liao.common.utils;
 
 import com.liao.common.constant.Constants;
+import com.liao.common.core.entity.SysDictData;
 import com.liao.common.core.redis.RedisCache;
-import com.liao.common.sytstem.entity.SysDictData;
 import com.liao.common.utils.spring.SpringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 

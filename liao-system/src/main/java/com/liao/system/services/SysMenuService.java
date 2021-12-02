@@ -3,7 +3,7 @@ package com.liao.system.services;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.liao.common.core.R;
 import com.liao.common.core.entity.TreeSelect;
-import com.liao.common.sytstem.entity.SysMenu;
+import com.liao.common.core.entity.SysMenu;
 import com.liao.system.entity.vo.RouterVo;
 
 import java.util.List;

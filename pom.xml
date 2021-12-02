@@ -198,6 +198,13 @@
                 <version>${liao.version}</version>
             </dependency>
 
+            <!-- 核心模块-->
+            <dependency>
+                <groupId>com.liao</groupId>
+                <artifactId>liao-framework</artifactId>
+                <version>${liao.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -206,6 +213,7 @@
         <module>liao-common</module>
         <module>liao-system</module>
         <module>liao-generator</module>
+        <module>liao-framework</module>
     </modules>
 
     <build>

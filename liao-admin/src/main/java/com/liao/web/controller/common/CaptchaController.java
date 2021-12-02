@@ -65,7 +65,7 @@ public class CaptchaController {
 
         // 判断验证码类型
         if (captchaType.equals("math")) {
-            // 要绘制的文本
+            // 计算类型
             String capText = captchaProducerMath.createText();
             capStr = capText.substring(0, capText.lastIndexOf("@"));
             code = capText.substring(capText.lastIndexOf("@") + 1);

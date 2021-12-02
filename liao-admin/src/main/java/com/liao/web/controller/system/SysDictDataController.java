@@ -3,7 +3,7 @@ package com.liao.web.controller.system;
 import com.liao.common.annotation.Log;
 import com.liao.common.core.R;
 import com.liao.common.enums.BusinessType;
-import com.liao.common.sytstem.entity.SysDictData;
+import com.liao.common.core.entity.SysDictData;
 import com.liao.system.services.SysDictDataService;
 import com.liao.system.services.SysDictTypeService;
 import io.swagger.annotations.Api;

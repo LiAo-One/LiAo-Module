@@ -1,7 +1,7 @@
 package com.liao;
 
 import com.liao.common.annotation.Excel;
-import com.liao.system.entity.SysAdmin;
+import com.liao.common.core.entity.SysAdmin;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

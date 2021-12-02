@@ -3,7 +3,7 @@ package com.liao.framework.aspectj;
 import com.alibaba.fastjson.JSON;
 import com.liao.common.annotation.Log;
 import com.liao.common.enums.BusinessStatus;
-import com.liao.common.sytstem.entity.SysOpenLog;
+import com.liao.system.entity.SysOpenLog;
 import com.liao.common.utils.ServletUtils;
 import com.liao.common.utils.StringUtils;
 import com.liao.framework.manager.AsyncManager;

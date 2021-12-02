@@ -13,11 +13,7 @@ import lombok.experimental.Accessors;
  * @author LiAo
  * @since 2020/12/14
  */
-@Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-@ApiModel(value = "统一结果集", description = "统一结果集")
-public class BaseException extends RuntimeException{
+public class BaseException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
@@ -40,4 +36,27 @@ public class BaseException extends RuntimeException{
      * 错误消息
      */
     private String defaultMessage;
+
+    public BaseException(String module, String code, Object[] args, String defaultMessage) {
+        this.module = module;
+        this.code = code;
+        this.args = args;
+        this.defaultMessage = defaultMessage;
+    }
+
+    public BaseException(String module, String code, Object[] args) {
+        this(module, code, args, null);
+    }
+
+    public BaseException(String module, String defaultMessage) {
+        this(module, null, null, defaultMessage);
+    }
+
+    public BaseException(String code, Object[] args) {
+        this(null, code, args, null);
+    }
+
+    public BaseException(String defaultMessage) {
+        this(null, null, null, defaultMessage);
+    }
 }

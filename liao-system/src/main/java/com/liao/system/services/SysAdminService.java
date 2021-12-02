@@ -2,7 +2,7 @@ package com.liao.system.services;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.liao.common.core.R;
-import com.liao.system.entity.SysAdmin;
+import com.liao.common.core.entity.SysAdmin;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -16,15 +16,6 @@ import java.util.List;
  * @since 2020-12-14
  */
 public interface SysAdminService extends IService<SysAdmin> {
-
-    /**
-     * 管理员登录
-     *
-     * @param adminAccount  账号
-     * @param adminPassword 密码
-     * @return 结果
-     */
-    R login(String adminAccount, String adminPassword);
 
     /**
      * 获取当前登录用户数据

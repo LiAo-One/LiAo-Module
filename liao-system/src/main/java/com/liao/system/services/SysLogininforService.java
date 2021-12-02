@@ -1,20 +1,20 @@
-package com.liao.common.sytstem.services;
+package com.liao.system.services;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.liao.common.core.R;
-import com.liao.common.sytstem.entity.SysOpenLog;
+import com.liao.system.entity.SysLogininfor;
 
 import java.util.List;
 
 /**
  * <p>
- * 操作日志记录 服务类
+ * 系统访问记录 服务类
  * </p>
  *
  * @author LiAo
- * @since 2020-12-17
+ * @since 2020-12-30
  */
-public interface SysOpenLogService extends IService<SysOpenLog> {
+public interface SysLogininforService extends IService<SysLogininfor> {
 
     /**
      * 分页查询 排序
@@ -22,7 +22,7 @@ public interface SysOpenLogService extends IService<SysOpenLog> {
      * @param recode 条件
      * @return 结果
      */
-    R selPage(SysOpenLog recode);
+    R selPage(SysLogininfor recode);
 
     /**
      * 根据id查询数据
@@ -46,7 +46,7 @@ public interface SysOpenLogService extends IService<SysOpenLog> {
      * @param recode 添加参数
      * @return 结果
      */
-    R add(SysOpenLog recode);
+    R add(SysLogininfor recode);
 
     /**
      * 根据id修改
@@ -54,7 +54,7 @@ public interface SysOpenLogService extends IService<SysOpenLog> {
      * @param recode 修改参数
      * @return 结果
      */
-    R updById(SysOpenLog recode);
+    R updById(SysLogininfor recode);
 
     /**
      * 根据id删除
