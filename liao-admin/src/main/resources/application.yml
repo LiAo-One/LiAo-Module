@@ -1,12 +1,10 @@
-#项目相关配置
-wick:
-  name: LiAo-Module
-  # 验证码类型 math 数组计算 char 字符验证
-  captchaType: math
-
 server:
   port: 8080
 spring:
+  # 资源信息
+  messages:
+    # 国际化资源文件路径
+    basename: messages
   profiles:
     # 生产环境
     active: dev
@@ -92,3 +90,17 @@ mybatis-plus:
       # 逻辑未删除值(默认为 0)
       logic-not-delete-value: 0
 
+#项目相关配置
+wick:
+  name: LiAo-Module
+  # 验证码类型 math 数组计算 char 字符验证
+  captchaType: math
+
+# token配置
+token:
+  # 令牌自定义标识
+  header: Authorization
+  # 令牌密钥
+  secret: 5fdc3f475e8f4c0a2641be47
+  # 令牌有效期（默认30分钟）
+  expireTime: 30

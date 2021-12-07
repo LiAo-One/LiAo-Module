@@ -1,6 +1,7 @@
 package com.liao.system.services;
 
 import com.liao.common.core.R;
+import com.liao.common.core.entity.SysMenu;
 import com.liao.system.entity.vo.RouterVo;
 
 import java.util.List;
@@ -26,10 +27,18 @@ public interface TokenCheckService {
     /**
      * 根据Key获取Token数据
      *
-     * @param key  Redis-key
+     * @param key Redis-key
      * @return 结果
      */
     List<RouterVo> getTokenMes(String key);
+
+    /**
+     * 根据用户信息查询菜单树
+     *
+     * @param userId 用户id
+     * @return 菜单列表
+     */
+    List<SysMenu> selectMenuTreeByUserId();
 
     /**
      * 获取当前登录用户数据

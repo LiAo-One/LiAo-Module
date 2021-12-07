@@ -8,7 +8,7 @@ import com.liao.common.core.page.PageUtils;
 import com.liao.common.exception.check.MissingParametersException;
 import com.liao.common.utils.StringUtils;
 import com.liao.system.dao.SysRoleMapper;
-import com.liao.system.entity.SysRole;
+import com.liao.common.core.entity.SysRole;
 import com.liao.system.entity.SysRoleMenu;
 import com.liao.system.services.SysRoleMenuService;
 import com.liao.system.services.SysRoleService;

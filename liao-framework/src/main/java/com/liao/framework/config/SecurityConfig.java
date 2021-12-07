@@ -1,6 +1,8 @@
 package com.liao.framework.config;
 
+import com.liao.framework.security.filter.JwtAuthenticationTokenFilter;
 import com.liao.framework.security.handle.AuthenticationEntryPointImpl;
+import com.liao.framework.security.handle.LogoutSuccessHandlerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -10,6 +12,11 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.web.filter.CorsFilter;
 
 /**
  * <p>
@@ -22,12 +29,36 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    /**
+     * 自定义用户认证逻辑
+     */
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+
+    /**
+     * 跨域过滤器
+     */
+    @Autowired
+    private CorsFilter corsFilter;
 
     /**
      * 认证失败处理类
      */
     @Autowired
     private AuthenticationEntryPointImpl unauthorizedHandler;
+
+    /**
+     * 退出处理类
+     */
+    @Autowired
+    private LogoutSuccessHandlerImpl logoutSuccessHandler;
+
+    /**
+     * token认证过滤器
+     */
+    @Autowired
+    private JwtAuthenticationTokenFilter authenticationTokenFilter;
 
     /**
      * 解决 无法直接注入 AuthenticationManager
@@ -66,7 +97,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // 对于登录login 注册register 验证码captchaImage 允许匿名访问
                 .antMatchers("/login", "/register", "/captchaImage").anonymous()
-                .antMatchers( HttpMethod.GET,
+                .antMatchers(HttpMethod.GET,
                         "/",
                         "/*.html",
                         "/**/*.html",
@@ -85,5 +116,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .headers().frameOptions().disable();
+        httpSecurity.logout().logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandler);
+        httpSecurity.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        // CORS filter
+        // 添加CORS filter
+        httpSecurity.addFilterBefore(corsFilter, JwtAuthenticationTokenFilter.class);
+        httpSecurity.addFilterBefore(corsFilter, LogoutFilter.class);
+
+    }
+
+    /**
+     * 强散列哈希加密实现
+     */
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    /**
+     * 身份认证接口
+     */
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
     }
 }

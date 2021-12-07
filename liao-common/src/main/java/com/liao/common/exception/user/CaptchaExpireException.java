@@ -1,7 +1,8 @@
 package com.liao.common.exception.user;
+
 /**
  * <p>
- *
+ * 验证码失效异常类
  * </p>
  *
  * @author LiAo
@@ -12,6 +13,6 @@ public class CaptchaExpireException extends UserException {
     private static final long serialVersionUID = 1L;
 
     public CaptchaExpireException() {
-        super("验证码失效", null);
+        super("user.jcaptcha.expire", null);
     }
 }

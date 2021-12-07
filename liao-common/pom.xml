@@ -129,6 +129,12 @@
             <artifactId>jackson-databind</artifactId>
         </dependency>
 
+        <!--Token生成与解析-->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+        </dependency>
+
         <!--获取浏览器信息-->
         <dependency>
             <groupId>eu.bitwalker</groupId>

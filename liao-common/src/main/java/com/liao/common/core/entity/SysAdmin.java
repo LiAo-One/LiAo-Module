@@ -2,6 +2,8 @@ package com.liao.common.core.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.liao.common.annotation.Excel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -40,7 +42,7 @@ public class SysAdmin implements Serializable {
 
     @Excel(name = "密码")
     @ApiModelProperty(value = "密码")
-    @TableField(select = false)
+    // @TableField(select = false)
     private String adminPassword;
 
     @Excel(name = "姓名")
@@ -85,4 +87,9 @@ public class SysAdmin implements Serializable {
     private Date updateTime;
 
 
+    @JsonIgnore
+    @JsonProperty
+    public String getAdminPassword() {
+        return adminPassword;
+    }
 }

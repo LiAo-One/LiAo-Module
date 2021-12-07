@@ -14,7 +14,7 @@ public class SecurityConstants {
     public static final String TOKEN_AUTHENTICATION = "Authorization";
 
     // 令牌前缀
-    public static final String TOKEN_PREFIX = "Bearer ";
+    public static final String TOKEN_PREFIX = "Bearer";
 
     // 合法请求标志
     public static final String X_SIGN = "X-Sign";

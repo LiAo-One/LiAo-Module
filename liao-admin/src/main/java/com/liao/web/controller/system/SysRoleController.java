@@ -3,7 +3,7 @@ package com.liao.web.controller.system;
 import com.liao.common.annotation.Log;
 import com.liao.common.core.R;
 import com.liao.common.enums.BusinessType;
-import com.liao.system.entity.SysRole;
+import com.liao.common.core.entity.SysRole;
 import com.liao.system.services.SysRoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

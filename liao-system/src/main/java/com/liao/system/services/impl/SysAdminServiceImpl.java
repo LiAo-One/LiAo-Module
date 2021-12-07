@@ -18,7 +18,7 @@ import com.liao.system.dao.SysAdminRoleMapper;
 import com.liao.system.dao.SysRoleMapper;
 import com.liao.common.core.entity.SysAdmin;
 import com.liao.system.entity.SysAdminRole;
-import com.liao.system.entity.SysRole;
+import com.liao.common.core.entity.SysRole;
 import com.liao.system.services.SysAdminRoleService;
 import com.liao.system.services.SysAdminService;
 import com.liao.system.services.SysMenuService;

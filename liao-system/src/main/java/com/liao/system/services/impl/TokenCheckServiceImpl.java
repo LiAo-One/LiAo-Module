@@ -1,12 +1,14 @@
 package com.liao.system.services.impl;
 
 import com.liao.common.core.R;
+import com.liao.common.core.entity.SysAdmin;
 import com.liao.common.exception.user.LoginExpiredException;
 import com.liao.common.core.entity.SysMenu;
 import com.liao.common.utils.RedisUtil;
+import com.liao.common.utils.SecurityUtils;
 import com.liao.common.utils.TokenUtil;
 import com.liao.system.dao.SysRoleMapper;
-import com.liao.system.entity.SysRole;
+import com.liao.common.core.entity.SysRole;
 import com.liao.system.entity.vo.RouterVo;
 import com.liao.system.services.SysMenuService;
 import com.liao.system.services.TokenCheckService;
@@ -30,6 +32,8 @@ public class TokenCheckServiceImpl implements TokenCheckService {
     // 按钮
     @Autowired
     private SysMenuService sysMenuService;
+
+
 
     /**
      * Tokne 校验
@@ -71,6 +75,21 @@ public class TokenCheckServiceImpl implements TokenCheckService {
 
         // 转换为路由
         return sysMenuService.buildMenus(menus);
+    }
+
+    /**
+     * 根据用户信息查询菜单树
+     *
+     * @return 菜单列表
+     */
+    @Override
+    public List<SysMenu> selectMenuTreeByUserId() {
+
+        SysAdmin user = SecurityUtils.getLoginUser().getUser();
+        // userRole
+        SysRole sysRole = sysRoleMapper.selLoginUserRole(user.getAdminId());
+
+        return sysMenuService.selectLoginMenuList(sysRole.getRoleId());
     }
 
     /**

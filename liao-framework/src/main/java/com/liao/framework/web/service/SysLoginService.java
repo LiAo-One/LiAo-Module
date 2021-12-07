@@ -5,28 +5,29 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.liao.common.constant.Constants;
 import com.liao.common.core.R;
+import com.liao.common.core.entity.LoginUser;
+import com.liao.common.core.entity.SysAdmin;
+import com.liao.common.core.entity.SysMenu;
 import com.liao.common.core.page.PageUtils;
 import com.liao.common.core.redis.RedisCache;
-import com.liao.common.exception.user.CaptchaException;
-import com.liao.common.exception.user.CaptchaExpireException;
-import com.liao.common.exception.user.LoginException;
-import com.liao.common.exception.user.PermissionException;
-import com.liao.common.core.entity.SysMenu;
+import com.liao.common.exception.ServiceException;
+import com.liao.common.exception.user.*;
+import com.liao.common.utils.MessageUtils;
 import com.liao.common.utils.RedisUtil;
 import com.liao.common.utils.StringUtils;
 import com.liao.common.utils.TokenUtil;
 import com.liao.framework.manager.AsyncManager;
 import com.liao.framework.manager.factory.AsyncFactory;
 import com.liao.system.dao.SysAdminMapper;
-import com.liao.system.dao.SysAdminRoleMapper;
 import com.liao.system.dao.SysRoleMapper;
-import com.liao.common.core.entity.SysAdmin;
-import com.liao.system.entity.SysRole;
+import com.liao.common.core.entity.SysRole;
 import com.liao.system.entity.vo.RouterVo;
-import com.liao.system.services.SysAdminRoleService;
 import com.liao.system.services.SysMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -57,9 +58,9 @@ public class SysLoginService {
     @Autowired
     private RedisUtil redisUtil;
 
-    // 角色与菜单
+    // Token
     @Autowired
-    private SysAdminRoleMapper sysAdminRoleMapper;
+    private TokenService tokenService;
 
     // 角色
     @Autowired
@@ -68,10 +69,6 @@ public class SysLoginService {
     // 按钮
     @Autowired
     private SysMenuService sysMenuService;
-
-    // 用户与角色
-    @Autowired
-    private SysAdminRoleService sysAdminRoleService;
 
     /**
      * 登录验证
@@ -86,8 +83,29 @@ public class SysLoginService {
         // 校验验证码
         validateCaptcha(username, code, uuid);
 
+        // 用户验证
+        Authentication authentication = null;
 
-        return null;
+        try {
+            authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        } catch (Exception e) {
+            if (e instanceof BadCredentialsException) {
+                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL,
+                        MessageUtils.message("user.password.not.match")));
+                throw new UserPasswordNotMatchException();
+            } else {
+                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, e.getMessage()));
+                throw new ServiceException(e.getMessage());
+            }
+        }
+
+        AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_SUCCESS,
+                MessageUtils.message("user.login.success")));
+
+        // 获取登录用户
+        LoginUser loginUser = (LoginUser) authentication.getPrincipal();
+
+        return tokenService.createToken(loginUser);
     }
 
     /**
@@ -105,17 +123,23 @@ public class SysLoginService {
         redisCache.deleteObject(verifyKey);
 
         if (StringUtils.isNull(captcha)) {
-            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, "验证码失效"));
+            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.expire")));
             throw new CaptchaExpireException();
         }
 
         if (!code.equalsIgnoreCase(captcha)) {
-            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, "验证码错误"));
+            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.error")));
             throw new CaptchaException();
         }
     }
 
-
+    /**
+     * 旧的登录方法
+     *
+     * @param adminAccount  账号
+     * @param adminPassword 密码
+     * @return
+     */
     public R login(String adminAccount, String adminPassword) {
 
         QueryWrapper<SysAdmin> wrapper = new QueryWrapper<>();

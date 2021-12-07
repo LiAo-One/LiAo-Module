@@ -1,7 +1,7 @@
 package com.liao.system.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.liao.system.entity.SysRole;
+import com.liao.common.core.entity.SysRole;
 import org.apache.ibatis.annotations.Param;
 
 /**

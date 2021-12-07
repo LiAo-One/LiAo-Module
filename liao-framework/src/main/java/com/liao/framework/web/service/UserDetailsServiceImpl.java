@@ -1,16 +1,10 @@
 package com.liao.framework.web.service;
 
-import com.liao.common.constant.Constants;
+import com.liao.common.core.entity.LoginUser;
 import com.liao.common.core.entity.SysAdmin;
 import com.liao.common.exception.ServiceException;
-import com.liao.common.exception.user.PermissionException;
 import com.liao.common.utils.StringUtils;
-import com.liao.framework.manager.AsyncManager;
-import com.liao.framework.manager.factory.AsyncFactory;
-import com.liao.system.dao.SysRoleMapper;
-import com.liao.system.entity.SysRole;
 import com.liao.system.services.SysAdminService;
-import com.liao.system.services.SysMenuService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
 
 /**
  * <p>
@@ -35,14 +31,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private SysAdminService sysAdminService;
 
-    // 角色
-    @Autowired
-    private SysRoleMapper sysRoleMapper;
-
-    // 按钮
-    @Autowired
-    private SysMenuService sysMenuService;
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -55,16 +43,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return createLoginUser(sysAdmins);
     }
 
+    /**
+     * 构建登录用户身份权限
+     *
+     * @param user 用户
+     * @return 登录权限对象
+     */
     public UserDetails createLoginUser(SysAdmin user) {
-
-        // userRole
-        SysRole sysRole = sysRoleMapper.selLoginUserRole(user.getAdminId());
-
-        if (StringUtils.isNull(sysRole)) {
-            AsyncManager.me().execute(AsyncFactory.recordLogininfor(user.getAdminName(), Constants.LOGIN_FAIL, "账户角色权限信息异常"));
-            throw new PermissionException();
-        }
-
-        return null;
+        return new LoginUser(user.getAdminId(), user, Collections.singletonList("*:*:*"));
     }
 }

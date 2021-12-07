@@ -14,4 +14,9 @@ public class HttpStatus {
      * 未授权
      */
     public static final int UNAUTHORIZED = 401;
+
+    /**
+     * 操作成功
+     */
+    public static final int SUCCESS = 200;
 }

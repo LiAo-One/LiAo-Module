@@ -1,5 +1,7 @@
 package com.liao.common.exception.base;
 
+import com.liao.common.utils.MessageUtils;
+import com.liao.common.utils.StringUtils;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -42,6 +44,18 @@ public class BaseException extends RuntimeException {
         this.code = code;
         this.args = args;
         this.defaultMessage = defaultMessage;
+    }
+
+    @Override
+    public String getMessage() {
+        String message = null;
+        if (!StringUtils.isEmpty(code)) {
+            message = MessageUtils.message(code, args);
+        }
+        if (message == null) {
+            message = defaultMessage;
+        }
+        return message;
     }
 
     public BaseException(String module, String code, Object[] args) {

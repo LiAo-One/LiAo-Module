@@ -1,6 +1,11 @@
 package com.liao.common.utils;
 
+import com.liao.common.constant.HttpStatus;
 import com.liao.common.constant.SecurityConstants;
+import com.liao.common.core.entity.LoginUser;
+import com.liao.common.exception.ServiceException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  * <p>
@@ -24,5 +29,22 @@ public class SecurityUtils {
         }
 
         return token;
+    }
+
+    public static LoginUser getLoginUser() {
+        try {
+            return (LoginUser) getAuthentication().getPrincipal();
+        } catch (Exception e) {
+            throw new ServiceException("获取用户信息异常", HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    /**
+     * 获取 Authentication
+     *
+     * @return Authentication
+     */
+    public static Authentication getAuthentication() {
+        return SecurityContextHolder.getContext().getAuthentication();
     }
 }
