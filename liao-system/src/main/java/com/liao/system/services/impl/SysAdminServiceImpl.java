@@ -10,6 +10,7 @@ import com.liao.common.exception.ServiceException;
 import com.liao.common.exception.check.MissingParametersException;
 import com.liao.common.exception.user.LoginExpiredException;
 import com.liao.common.utils.RedisUtil;
+import com.liao.common.utils.SecurityUtils;
 import com.liao.common.utils.StringUtils;
 import com.liao.common.utils.TokenUtil;
 import com.liao.common.utils.poi.ExcelUtil;
@@ -195,6 +196,8 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public R add(SysAdmin recode, Long roleId) {
 
+        recode.setAdminPassword(SecurityUtils.encryptPassword(recode.getAdminPassword()));
+
         sysAdminMapper.insert(recode);
 
         // 角色id不为空
@@ -219,6 +222,11 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public R updById(SysAdmin recode, Long roleId) {
+
+        if (StringUtils.isNotNull(recode.getAdminPassword())) {
+            recode.setAdminPassword(SecurityUtils.encryptPassword(recode.getAdminPassword()));
+        }
+
         if (StringUtils.isEmpty(recode.getAdminId())) {
             throw new MissingParametersException("管理员ID");
         }
@@ -295,6 +303,10 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
         StringBuilder failureMsg = new StringBuilder();
 
         for (SysAdmin sysAdmin : userList) {
+
+            if (StringUtils.isNotNull(sysAdmin.getAdminPassword())) {
+                sysAdmin.setAdminPassword(SecurityUtils.encryptPassword(sysAdmin.getAdminPassword()));
+            }
 
             try {
                 List<SysAdmin> sysAdmins = selectUserByUserName(sysAdmin.getAdminAccount());
