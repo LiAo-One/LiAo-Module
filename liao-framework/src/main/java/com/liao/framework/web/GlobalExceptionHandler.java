@@ -2,6 +2,7 @@ package com.liao.framework.web;
 
 import com.liao.common.core.R;
 import com.liao.common.exception.CustomException;
+import com.liao.common.exception.ServiceException;
 import com.liao.common.exception.ali.AliBackToCheckException;
 import com.liao.common.exception.user.LoginExpiredException;
 import com.liao.common.utils.StringUtils;
@@ -13,6 +14,8 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -96,6 +99,7 @@ public class GlobalExceptionHandler {
         BindingResult bindingResult = ex.getBindingResult();
         if (bindingResult.hasErrors()) {
             FieldError fieldError = bindingResult.getFieldError();
+            assert fieldError != null;
             String field = fieldError.getField();
             String defaultMessage = fieldError.getDefaultMessage();
             log.error(ex.getMessage(), ex);
@@ -116,6 +120,21 @@ public class GlobalExceptionHandler {
         }
         return R.error(e.getCode(), e.getMessage());
     }
+
+    /**
+     * 业务异常
+     *
+     * @param e       异常
+     * @param request 请求信息
+     * @return 异常处理信息
+     */
+    @ExceptionHandler(ServiceException.class)
+    public R handleServiceException(ServiceException e, HttpServletRequest request) {
+        log.error(e.getMessage(), e);
+        Integer code = e.getCode();
+        return StringUtils.isNotNull(code) ? R.error(code, e.getMessage()) : R.error(e.getMessage());
+    }
+
 
     /**
      * 未登录

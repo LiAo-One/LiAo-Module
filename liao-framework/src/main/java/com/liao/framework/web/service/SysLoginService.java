@@ -123,12 +123,14 @@ public class SysLoginService {
         redisCache.deleteObject(verifyKey);
 
         if (StringUtils.isNull(captcha)) {
-            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.expire")));
+            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL,
+                    MessageUtils.message("user.jcaptcha.expire")));
             throw new CaptchaExpireException();
         }
 
         if (!code.equalsIgnoreCase(captcha)) {
-            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.error")));
+            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL,
+                    MessageUtils.message("user.jcaptcha.error")));
             throw new CaptchaException();
         }
     }
