@@ -3,19 +3,20 @@ package com.liao.web.controller.system;
 import com.liao.common.annotation.Log;
 import com.liao.common.annotation.SignatureValidation;
 import com.liao.common.core.R;
+import com.liao.common.core.entity.SysAdmin;
 import com.liao.common.enums.BusinessType;
 import com.liao.common.utils.poi.ExcelUtil;
 import com.liao.framework.web.service.SysLoginService;
-import com.liao.common.core.entity.SysAdmin;
 import com.liao.system.services.SysAdminService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 /**
  * <p>
@@ -108,7 +109,10 @@ public class SysAdminController {
     @PostMapping("add")
     @ApiOperation("添加数据")
     @Log(title = "管理员", businessType = BusinessType.INSERT)
-    public R add(SysAdmin recode, @RequestParam(value = "roleId", required = false) Long roleId) {
+    public R add(
+            SysAdmin recode,
+            @RequestParam(value = "roleId", required = false) Long roleId
+    ) {
         return sysAdminService.add(recode, roleId);
     }
 
@@ -190,4 +194,3 @@ public class SysAdminController {
         return util.exportExcel(list, "用户数据");
     }
 }
-

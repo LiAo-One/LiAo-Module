@@ -44,7 +44,7 @@ public class SysLoginController {
     @Autowired
     private SysMenuService sysMenuService;
 
-    @PostMapping("/login")
+    @PostMapping("/auth/login")
     public R login(@RequestBody LoginBody loginBody) {
         R success = R.success();
         String toke = sysLoginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode(),
@@ -58,7 +58,7 @@ public class SysLoginController {
      *
      * @return 用户
      */
-    @GetMapping("getInfo")
+    @GetMapping("/auth/getInfo")
     public R getInfo() {
 
         // 获取用户信息
@@ -80,7 +80,7 @@ public class SysLoginController {
      *
      * @return 路由信息
      */
-    @GetMapping("getRouters")
+    @GetMapping("/auth/getRouters")
     public R getRouters() {
         List<SysMenu> sysMenus = tokenCheckService.selectMenuTreeByUserId();
         return R.success(sysMenuService.buildMenus(sysMenus));
