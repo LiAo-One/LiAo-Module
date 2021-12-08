@@ -51,7 +51,7 @@ public class CaptchaController {
      * @return
      * @throws IOException
      */
-    @GetMapping("/auth/captchaImage")
+    @GetMapping("/captchaImage")
     public R getCode(HttpServletResponse response) throws IOException {
         R success = R.success();
         success.put("captchaOnOff", true);

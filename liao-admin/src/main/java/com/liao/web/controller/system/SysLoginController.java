@@ -80,7 +80,7 @@ public class SysLoginController {
      *
      * @return 路由信息
      */
-    @GetMapping("/auth/getRouters")
+    @GetMapping("/system/token/getRouters")
     public R getRouters() {
         List<SysMenu> sysMenus = tokenCheckService.selectMenuTreeByUserId();
         return R.success(sysMenuService.buildMenus(sysMenus));
