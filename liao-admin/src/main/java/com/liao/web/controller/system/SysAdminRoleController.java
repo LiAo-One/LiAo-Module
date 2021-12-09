@@ -1,6 +1,7 @@
 package com.liao.web.controller.system;
 
 import com.liao.common.annotation.Log;
+import com.liao.common.annotation.SignatureValidation;
 import com.liao.common.core.R;
 import com.liao.common.enums.BusinessType;
 import com.liao.system.entity.SysAdminRole;
@@ -37,6 +38,7 @@ public class SysAdminRoleController {
      * @param recode 条件
      * @return 结果
      */
+    @SignatureValidation
     @PostMapping("sel_page")
     @ApiOperation("分页、排序、动态条件")
     public R selPage(SysAdminRole recode) {
@@ -50,8 +52,9 @@ public class SysAdminRoleController {
      * @return 结果
      */
     @PostMapping("sel_id")
+    @SignatureValidation
     @ApiOperation("根据id查询数据")
-    public R findById(Long id){
+    public R findById(Long id) {
         return sysAdminRoleService.findById(id);
     }
 
@@ -61,9 +64,10 @@ public class SysAdminRoleController {
      * @param ids ids
      * @return 结果
      */
+    @SignatureValidation
     @PostMapping("sel_ids")
     @ApiOperation("根据ids批量查询")
-    public R findByIds(@RequestParam("ids") List<Long> ids){
+    public R findByIds(@RequestParam("ids") List<Long> ids) {
         return sysAdminRoleService.findByIds(ids);
     }
 
@@ -74,8 +78,9 @@ public class SysAdminRoleController {
      * @return 结果
      */
     @PostMapping("add")
+    @SignatureValidation
     @ApiOperation("添加数据")
-    @Log(title = "管理员角色关联表",businessType = BusinessType.INSERT)
+    @Log(title = "管理员角色关联表", businessType = BusinessType.INSERT)
     public R add(SysAdminRole recode) {
         return sysAdminRoleService.add(recode);
     }
@@ -86,9 +91,10 @@ public class SysAdminRoleController {
      * @param recode 修改参数
      * @return 结果
      */
+    @SignatureValidation
     @PostMapping("upd_id")
     @ApiOperation("根据id修改")
-    @Log(title = "管理员角色关联表",businessType = BusinessType.UPDATE)
+    @Log(title = "管理员角色关联表", businessType = BusinessType.UPDATE)
     public R upd(SysAdminRole recode) {
         return sysAdminRoleService.updById(recode);
     }
@@ -99,10 +105,11 @@ public class SysAdminRoleController {
      * @param id id
      * @return 结果
      */
+    @SignatureValidation
     @PostMapping("del_id")
     @ApiOperation("根据id删除")
     @Log(title = "管理员角色关联表", businessType = BusinessType.DELETE)
-    public R delete(Long id){
+    public R delete(Long id) {
         return sysAdminRoleService.delete(id);
     }
 
@@ -112,10 +119,11 @@ public class SysAdminRoleController {
      * @param ids id集合
      * @return 结果
      */
+    @SignatureValidation
     @PostMapping("del_ids")
     @ApiOperation("根据ids批量删除")
     @Log(title = "管理员角色关联表", businessType = BusinessType.DELETE)
-    public R deletes(@RequestParam("ids") List<Long> ids){
+    public R deletes(@RequestParam("ids") List<Long> ids) {
         return sysAdminRoleService.deletes(ids);
     }
 }

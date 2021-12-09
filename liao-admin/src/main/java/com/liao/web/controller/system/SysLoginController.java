@@ -1,5 +1,6 @@
 package com.liao.web.controller.system;
 
+import com.liao.common.annotation.SignatureValidation;
 import com.liao.common.constant.Constants;
 import com.liao.common.core.R;
 import com.liao.common.core.entity.LoginBody;
@@ -44,6 +45,14 @@ public class SysLoginController {
     @Autowired
     private SysMenuService sysMenuService;
 
+
+    /**
+     * 用户登录
+     *
+     * @param loginBody 登录对象
+     * @return 结果
+     */
+    @SignatureValidation
     @PostMapping("/auth/login")
     public R login(@RequestBody LoginBody loginBody) {
         R success = R.success();
@@ -58,6 +67,7 @@ public class SysLoginController {
      *
      * @return 用户
      */
+    @SignatureValidation
     @GetMapping("/auth/getInfo")
     public R getInfo() {
 
@@ -80,6 +90,7 @@ public class SysLoginController {
      *
      * @return 路由信息
      */
+    @SignatureValidation
     @GetMapping("/system/token/getRouters")
     public R getRouters() {
         List<SysMenu> sysMenus = tokenCheckService.selectMenuTreeByUserId();

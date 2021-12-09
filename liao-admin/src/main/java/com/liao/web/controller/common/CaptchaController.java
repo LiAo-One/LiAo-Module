@@ -3,6 +3,7 @@ package com.liao.web.controller.common;
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.util.IdUtil;
 import com.google.code.kaptcha.Producer;
+import com.liao.common.annotation.SignatureValidation;
 import com.liao.common.constant.Constants;
 import com.liao.common.core.R;
 import com.liao.common.core.redis.RedisCache;
@@ -18,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
-
 
 /**
  * <p>
@@ -47,10 +47,11 @@ public class CaptchaController {
     /**
      * 生成验码
      *
-     * @param response
-     * @return
-     * @throws IOException
+     * @param response 请求体
+     * @return 验证码
+     * @throws IOException ioException
      */
+    @SignatureValidation
     @GetMapping("/captchaImage")
     public R getCode(HttpServletResponse response) throws IOException {
         R success = R.success();
@@ -82,6 +83,7 @@ public class CaptchaController {
         FastByteArrayOutputStream os = new FastByteArrayOutputStream();
 
         try {
+            assert image != null;
             ImageIO.write(image, "jpg", os);
         } catch (IOException e) {
             return R.error(e.getMessage());

@@ -35,41 +35,13 @@ public class SysAdminController {
     @Autowired
     private SysAdminService sysAdminService;
 
-    @Autowired
-    private SysLoginService sysLoginService;
-
-    /**
-     * 管理员登录
-     *
-     * @param adminAccount  账号
-     * @param adminPassword 密码
-     * @return 结果
-     */
-    @PostMapping("login")
-    @ApiOperation("管理员登录")
-    @SignatureValidation
-    public R login(String adminAccount, String adminPassword) {
-        return sysLoginService.login(adminAccount, adminPassword);
-    }
-
-    /**
-     * 退出登录
-     *
-     * @param token token
-     * @return 结果
-     */
-    @PostMapping("logout")
-    @ApiOperation("管理员退出登录")
-    public R logout(String token) {
-        return sysAdminService.logout(token);
-    }
-
     /**
      * 分页查询 排序
      *
      * @param recode 条件
      * @return 结果
      */
+    @SignatureValidation
     @PostMapping("sel_page")
     @ApiOperation("分页、排序、动态条件")
     public R selPage(SysAdmin recode) {
@@ -82,6 +54,7 @@ public class SysAdminController {
      * @param id id
      * @return 结果
      */
+    @SignatureValidation
     @PostMapping("sel_id")
     @ApiOperation("根据id查询数据")
     public R findById(Long id) {
@@ -94,6 +67,7 @@ public class SysAdminController {
      * @param ids ids
      * @return 结果
      */
+    @SignatureValidation
     @PostMapping("sel_ids")
     @ApiOperation("根据ids批量查询")
     public R findByIds(@RequestParam("ids") List<Long> ids) {
@@ -107,6 +81,7 @@ public class SysAdminController {
      * @return 结果
      */
     @PostMapping("add")
+    @SignatureValidation
     @ApiOperation("添加数据")
     @Log(title = "管理员", businessType = BusinessType.INSERT)
     public R add(
@@ -122,6 +97,7 @@ public class SysAdminController {
      * @param recode 修改参数
      * @return 结果
      */
+    @SignatureValidation
     @PostMapping("upd_id")
     @ApiOperation("根据id修改")
     @Log(title = "管理员", businessType = BusinessType.UPDATE)
@@ -135,6 +111,7 @@ public class SysAdminController {
      * @param id id
      * @return 结果
      */
+    @SignatureValidation
     @PostMapping("del_id")
     @ApiOperation("根据id删除")
     @Log(title = "管理员", businessType = BusinessType.DELETE)
@@ -148,6 +125,7 @@ public class SysAdminController {
      * @param ids id集合
      * @return 结果
      */
+    @SignatureValidation
     @PostMapping("del_ids")
     @ApiOperation("根据ids批量删除")
     @Log(title = "管理员", businessType = BusinessType.DELETE)
@@ -160,6 +138,7 @@ public class SysAdminController {
      *
      * @return 文件参数
      */
+    @SignatureValidation
     @GetMapping("/importTemplate")
     public R importTemplate() {
         // 创建对象
@@ -174,6 +153,7 @@ public class SysAdminController {
      * @param file 文件
      * @return 结果
      */
+    @SignatureValidation
     @PostMapping("/importData")
     @Log(title = "用户管理", businessType = BusinessType.IMPORT)
     public R importData(MultipartFile file, boolean isUpdate) {
@@ -186,8 +166,9 @@ public class SysAdminController {
      * @param user 条件
      * @return 结果
      */
-    @Log(title = "用户管理", businessType = BusinessType.EXPORT)
+    @SignatureValidation
     @GetMapping("/export")
+    @Log(title = "用户管理", businessType = BusinessType.EXPORT)
     public R export(SysAdmin user) {
         List<SysAdmin> list = sysAdminService.selectUserList(user);
         ExcelUtil<SysAdmin> util = new ExcelUtil<>(SysAdmin.class);
