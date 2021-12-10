@@ -3,8 +3,7 @@ package com.liao.system.services.impl;
 import com.liao.common.constant.Constants;
 import com.liao.common.core.redis.RedisCache;
 import com.liao.common.core.text.Convert;
-import com.liao.common.utils.StringUtils;
-import com.liao.system.services.ISysConfigService;
+import com.liao.system.services.SysConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -15,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author LiAo
  * @since 2021/12/1
  */
-public class SysConfigServiceImpl implements ISysConfigService {
+public class SysConfigServiceImpl implements SysConfigService {
 
     @Autowired
     private RedisCache redisCache;

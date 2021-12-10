@@ -9,7 +9,7 @@ import java.util.Set;
 
 /**
  * <p>
- *
+ * 登录用户身份权限
  * </p>
  *
  * @author LiAo

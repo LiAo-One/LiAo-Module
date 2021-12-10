@@ -8,7 +8,7 @@ package com.liao.system.services;
  * @author LiAo
  * @since 2021/12/1
  */
-public interface ISysConfigService {
+public interface SysConfigService {
 
     /**
      * 根据键名查询参数配置信息
