@@ -58,7 +58,6 @@
 			<groupId>com.liao</groupId>
 			<artifactId>liao-system</artifactId>
 		</dependency>
-
 	</dependencies>
 
 	<build>

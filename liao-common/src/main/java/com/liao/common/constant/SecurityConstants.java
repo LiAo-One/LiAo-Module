@@ -20,5 +20,5 @@ public class SecurityConstants {
     public static final String X_SIGN = "X-Sign";
 
     // 请求时间戳
-    public static final String Time_Info = "Time-Info";
+    public static final String TIME_INFO = "Time-Info";
 }

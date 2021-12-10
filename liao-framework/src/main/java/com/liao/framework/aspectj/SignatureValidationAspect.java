@@ -29,7 +29,7 @@ import java.util.TreeMap;
 @Component
 public class SignatureValidationAspect {
 
-    // 请求最小限制
+    // 请求最小限制 15 秒
     private static final int MAX_REQUEST = 15;
 
     //配置织入点
@@ -46,7 +46,7 @@ public class SignatureValidationAspect {
         // 需要校验的Token
         String token = ServletUtils.getRequest().getHeader(SecurityConstants.X_SIGN);
         // 时间戳
-        String timeInfo = ServletUtils.getRequest().getHeader(SecurityConstants.Time_Info);
+        String timeInfo = ServletUtils.getRequest().getHeader(SecurityConstants.TIME_INFO);
 
         // 格式化后的参数
         String asciiSort = timeInfo + setRequestValue();
