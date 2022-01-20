@@ -13,6 +13,7 @@ import App from './App'
 import store from './store'
 import router from './router'
 import permission from './directive/permission'
+import plugins from './plugins' // plugins
 
 import './assets/icons' // icon
 import './permission' // permission control
@@ -74,6 +75,7 @@ Vue.component('Pagination', Pagination)
 Vue.component('RightToolbar', RightToolbar)
 
 Vue.use(permission)
+Vue.use(plugins)
 
 /**
  * If you don't want to use mock-server

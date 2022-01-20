@@ -1,9 +1,9 @@
-import request from '@/utils/request'
+import {system_service} from '@/utils/request'
 
 // 查询定时任务调度列表
 export function listJob(query) {
-  return request({
-    url: '/monitor/job/list',
+  return system_service({
+    url: '/quartz/job/list',
     method: 'get',
     params: query
   })
@@ -11,42 +11,42 @@ export function listJob(query) {
 
 // 查询定时任务调度详细
 export function getJob(jobId) {
-  return request({
-    url: '/monitor/job/' + jobId,
+  return system_service({
+    url: '/quartz/job/' + jobId,
     method: 'get'
   })
 }
 
 // 新增定时任务调度
 export function addJob(data) {
-  return request({
-    url: '/monitor/job',
+  return system_service({
+    url: '/quartz/job',
     method: 'post',
-    data: data
+    params: data
   })
 }
 
 // 修改定时任务调度
 export function updateJob(data) {
-  return request({
-    url: '/monitor/job',
+  return system_service({
+    url: '/quartz/job',
     method: 'put',
-    data: data
+    params: data
   })
 }
 
 // 删除定时任务调度
 export function delJob(jobId) {
-  return request({
-    url: '/monitor/job/' + jobId,
+  return system_service({
+    url: '/quartz/job/' + jobId,
     method: 'delete'
   })
 }
 
 // 导出定时任务调度
 export function exportJob(query) {
-  return request({
-    url: '/monitor/job/export',
+  return system_service({
+    url: '/quartz/job/export',
     method: 'get',
     params: query
   })
@@ -54,27 +54,24 @@ export function exportJob(query) {
 
 // 任务状态修改
 export function changeJobStatus(jobId, status) {
-  const data = {
-    jobId,
-    status
-  }
-  return request({
-    url: '/monitor/job/changeStatus',
+  return system_service({
+    url: '/quartz/job/changeStatus',
     method: 'put',
-    data: data
+    params: {
+      jobId,
+      status
+    }
   })
 }
 
-
-// 定时任务立即执行一次
 export function runJob(jobId, jobGroup) {
-  const data = {
-    jobId,
-    jobGroup
-  }
-  return request({
-    url: '/monitor/job/run',
+  return system_service({
+    url: '/quartz/job/run',
     method: 'put',
-    data: data
+    params: {
+      jobId,
+      jobGroup
+    }
   })
 }
+

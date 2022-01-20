@@ -159,4 +159,6 @@ public class SysJobController {
         sysJob.setStatus(job.getStatus());
         return R.r(sysJobService.changeStatus(sysJob));
     }
+
+
 }

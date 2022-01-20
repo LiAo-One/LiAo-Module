@@ -199,7 +199,8 @@
 </template>
 
 <script>
-import {list, delOperlog, cleanOperlog, exportOperlog} from '@/api/monitor/operlog'
+import {list, delOperlog, cleanOperlog, exportOperlog, getLog} from '@/api/monitor/operlog'
+import {getJob} from "@/api/monitor/job";
 
 export default {
   name: 'Operlog',
@@ -241,6 +242,16 @@ export default {
     }
   },
   created() {
+    const jobId = this.$route.query.jobId;
+    if (jobId !== undefined && jobId !== 0) {
+      getJob(jobId).then(response => {
+        this.queryParams.jobName = response.data[0].jobName;
+        this.queryParams.jobGroup = response.data[0].jobGroup;
+        this.getList();
+      });
+    } else {
+      this.getList();
+    }
     this.getList()
   },
   methods: {

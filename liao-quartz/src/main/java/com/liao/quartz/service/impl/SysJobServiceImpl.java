@@ -210,7 +210,7 @@ public class SysJobServiceImpl extends ServiceImpl<SysJobMapper, SysJob> impleme
         Long jobId = job.getJobId();
         String jobGroup = job.getJobGroup();
         job.setStatus(ScheduleConstants.Status.NORMAL.getValue());
-        int rows = this.updateSysJob(job);
+        int rows = sysJobMapper.updateById(job);
         if (rows > 0) {
             scheduler.resumeJob(ScheduleUtils.getJobKey(jobId, jobGroup));
         }
@@ -228,7 +228,7 @@ public class SysJobServiceImpl extends ServiceImpl<SysJobMapper, SysJob> impleme
         Long jobId = job.getJobId();
         String jobGroup = job.getJobGroup();
         job.setStatus(ScheduleConstants.Status.PAUSE.getValue());
-        int rows = this.updateSysJob(job);
+        int rows = sysJobMapper.updateById(job);
         if (rows > 0) {
             scheduler.pauseJob(ScheduleUtils.getJobKey(jobId, jobGroup));
         }

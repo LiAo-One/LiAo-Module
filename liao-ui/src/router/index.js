@@ -93,7 +93,7 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/job',
+    path: '/monitor/job',
     component: Layout,
     hidden: true,
     children: [

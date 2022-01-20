@@ -134,6 +134,14 @@ public class SysJobLogServiceImpl extends ServiceImpl<SysJobLogMapper, SysJobLog
     }
 
     /**
+     * 清空数据
+     */
+    @Override
+    public void clean() {
+        sysJobLogMapper.cleanSysJobLog();
+    }
+
+    /**
      * SysJobLog条件构建
      *
      * @param sysJobLog sysJobLog

@@ -25,7 +25,12 @@ system_service.interceptors.request.use(config => {
     config.headers['Authorization'] = 'Bearer ' + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
   }
 
+  if (!config.params) {
+    config.params = {};
+  }
+
   if (config.params) {
+
     if (config.params.createTime) {
       config.params.createTime = null
     }
@@ -38,6 +43,7 @@ system_service.interceptors.request.use(config => {
     // 封装校验
     setTokenCheck(config);
   }
+
   return config
 }, error => {
   Promise.reject(error)
@@ -78,7 +84,7 @@ system_service.interceptors.response.use(res => {
   error => {
     console.log('err' + error)
     let {message} = error
-    if (message == 'Network Error') {
+    if (message === 'Network Error') {
       message = '后端接口连接异常'
     } else if (message.includes('timeout')) {
       message = '系统接口请求超时'
@@ -116,7 +122,6 @@ function setTokenCheck(data) {
   }
 
   let secret = "c353fdcac26c4035bdb123c6d8f2e2b1";
-
 
   data.headers['X-Sign'] = md5(timeInfo + keys + secret); // X-Sign
 

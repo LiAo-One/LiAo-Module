@@ -54,8 +54,7 @@ export function logout(token) {
   return system_service({
     url: '/auth/logout',
     method: 'post',
-    params: {
-    }
+    params: {}
   })
 }
 
@@ -66,6 +65,7 @@ export function getCodeImg() {
     headers: {
       isToken: false
     },
+    params: {},
     method: 'get',
     timeout: 20000
   })

@@ -86,8 +86,21 @@ public class SysJobLogController {
      */
     @DeleteMapping("/{jobLogIds}")
     @ApiOperation("删除定时任务调度日志")
-    @Log(title = "定时任务调度日志" , businessType = BusinessType.DELETE)
+    @Log(title = "定时任务调度日志", businessType = BusinessType.DELETE)
     public R remove(@PathVariable("jobLogIds") List<Long> jobLogIds) {
         return R.r(sysJobLogService.deleteSysJobLogByIds(jobLogIds));
+    }
+
+    /**
+     * 清空操作日志
+     *
+     * @return 结果
+     */
+    @DeleteMapping("clean")
+    @ApiOperation("清空日志")
+    @Log(title = "清空日志", businessType = BusinessType.CLEAN)
+    public R clean() {
+        sysJobLogService.clean();
+        return R.success();
     }
 }

@@ -3,6 +3,7 @@ package com.liao.quartz.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.liao.common.core.R;
 import com.liao.quartz.entity.SysJobLog;
 
 import java.util.List;
@@ -70,6 +71,11 @@ public interface SysJobLogService extends IService<SysJobLog> {
      * @return 结果
      */
     int deleteSysJobLogByIds(List<Long> jobLogIds);
+
+    /**
+     * 清空数据
+     */
+    void clean();
 
     /**
      * SysJobLog条件构建
