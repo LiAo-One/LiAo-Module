@@ -60,7 +60,7 @@ spring:
             multi-statement-allow: true
   # Redis
   redis:
-    host: 192.168.2.240
+    host: 120.55.96.180
     port: 6379
     database: 0
     #连 接超时时间

@@ -200,6 +200,13 @@
                 <version>${liao.version}</version>
             </dependency>
 
+            <!-- 通用工具-->
+            <dependency>
+                <groupId>com.liao</groupId>
+                <artifactId>liao-quartz</artifactId>
+                <version>${liao.version}</version>
+            </dependency>
+
             <!-- 核心模块-->
             <dependency>
                 <groupId>com.liao</groupId>
@@ -216,6 +223,7 @@
         <module>liao-system</module>
         <module>liao-generator</module>
         <module>liao-framework</module>
+        <module>liao-quartz</module>
     </modules>
 
     <build>
