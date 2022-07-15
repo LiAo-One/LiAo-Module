@@ -80,7 +80,7 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
         String token = TokenUtil.getLoginUserToken();
 
         SysAdmin loginInfo = (SysAdmin) redisUtil.get(token);
-
+        
         // 为空抛异常
         if (StringUtils.isNull(loginInfo)) {
             throw new LoginExpiredException();
